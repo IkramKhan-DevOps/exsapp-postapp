@@ -1,21 +1,9 @@
+from django.shortcuts import redirect
+from django.views import View
 from django.views.generic import TemplateView, ListView
 
 
-class HomeView(TemplateView):
-    template_name = 'website/home.html'
+class HomeView(View):
 
-
-class PrivacyPolicyView(TemplateView):
-    template_name = 'website/policy.html'
-
-
-class TermsAndConditionsView(TemplateView):
-    template_name = 'website/terms.html'
-
-
-class ContactView(TemplateView):
-    template_name = 'website/contact.html'
-
-
-class Error404View(TemplateView):
-    template_name = 'website/404.html'
+    def get(self, request):
+        return redirect('account_login')

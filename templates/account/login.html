@@ -87,45 +87,10 @@
                                         </button>
                                     </div>
                                 </form>
-                                {% if socialaccount_providers %}
-                                    <hr>
-                                    <ul class="list-unstyled">
-                                        {% for provider in socialaccount_providers %}
-                                            {% if provider.id == "openid" %}
-                                                {% for brand in provider.get_brands %}
-                                                    <li>
-                                                        <a title="{{ brand.name }}"
-                                                           class="socialaccount_provider {{ provider.id }} {{ brand.id }}"
-                                                           href="{% provider_login_url provider.id openid=brand.openid_url process=process %}"
-                                                        >{{ brand.name }}</a>
-                                                    </li>
-                                                {% endfor %}
-                                            {% endif %}
-                                            <li>
-                                                <a class="btn btn-block btn-danger" title="{{ provider.name }}"
-                                                   class="socialaccount_provider {{ provider.id }}"
-                                                   href="{% provider_login_url provider.id process=process scope=scope auth_params=auth_params %}">{{ provider.name }}</a>
-                                            </li>
-                                        {% endfor %}
-                                    </ul>
-                                {% endif %}
 
-                                <div class="mt-4 text-center">
-                                    <a href="{% url 'account_reset_password' %}" class="text-muted"><i
-                                            class="mdi mdi-lock mr-1"></i> Forgot your password?</a>
-                                </div>
                             </div>
 
                         </div>
-                    </div>
-                    <div class="mt-5 text-center">
-                        <p>Don't have an account ? <a href="{% url 'account_signup' %}"
-                                                      class="font-weight-medium text-primary">
-                            Signup now </a></p>
-                        <p>© 2020 - {% now 'Y' %}
-                            <a class="text-secondary" href="{% url 'website:home' %}" target="_blank"> <strong>* </strong></a>.
-                    Design & Develop by
-                    <strong><a class="text-primary" href="https://exarth.com/" target="_blank">Exarth</a></strong></p>
                     </div>
 
                 </div>
