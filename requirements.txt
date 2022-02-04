@@ -1,0 +1,17 @@
+django~=3.2.8
+django-filter~=21.1
+djangorestframework~=3.12.4
+djangorestframework_simplejwt
+
+django-allauth~=0.45.0
+dj-rest-auth
+python-dateutil~=2.8.2
+
+markdown
+django-filter
+django-resized
+python-decouple
+django-ckeditor
+django-crispy-forms~=1.13.0
+pillow
+six~=1.16.0

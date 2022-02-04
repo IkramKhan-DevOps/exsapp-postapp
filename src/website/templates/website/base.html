@@ -1,0 +1,45 @@
+{% load static %}
+<!doctype html>
+
+<html lang="zxx">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>
+        {% block title %}
+            Website |
+            {% block sub_title %}
+                Home
+            {% endblock %}
+        {% endblock %}
+    </title>
+
+    {% block css_links %}
+    {% endblock %}
+
+</head>
+<body>
+
+{% block header %}
+    {% include 'website/include/header.html' %}
+{% endblock %}
+
+{% block content %}
+
+{% endblock %}
+
+{% block footer %}
+    {% include 'website/include/footer.html' %}
+{% endblock %}
+
+{% block internal_js %}
+
+{% endblock %}
+
+
+</body>
+</html>
+
+{% block external_js %}{% endblock %}
