@@ -40,6 +40,12 @@ class UserListView(ListView):
     template_name = 'admins/user_list.html'
 
 
+@method_decorator(admin_decorators, name='dispatch')
+class ParcelListView(ListView):
+    queryset = Parcel.objects.all()
+    template_name = 'admins/parcel_list.html'
+
+
 class ParcelForm(forms.ModelForm):
     sender = forms.CharField()
     receiver = forms.CharField()
@@ -49,6 +55,21 @@ class ParcelForm(forms.ModelForm):
         fields = [
             'postal_charges', 'service_type', 'dispatchLocation', 'details'
         ]
+
+
+@method_decorator(admin_decorators, name='dispatch')
+class SearchIDView(View):
+
+    def get(self, request):
+        context = {}
+        if request.GET.get('search'):
+            search = request.GET.get('search')
+            parcel = Parcel.objects.filter(tracking_id=search)
+            if parcel:
+                context['parcel'] = parcel.first()
+            else:
+                messages.error(request, "Requested tracking ID Doesn't available")
+        return render(request, 'admins/search_id.html', context=context)
 
 
 @method_decorator(admin_decorators, name='dispatch')
@@ -67,7 +88,7 @@ class TestView(View):
             form.instance.receiver = User.objects.get(username=form.cleaned_data['receiver'])
             form.save()
             messages.success(request, "Request added successfully.")
-            return redirect('admins:add-parcel')
+            return redirect('admins:parcel')
         return render(request, 'admins/test.html', {'form': form})
 
 

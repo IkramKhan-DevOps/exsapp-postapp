@@ -10,7 +10,14 @@
 
 {#DASHBOARD#}
 <li class="nav-item">
-    <a class="nav-link dropdown-toggle arrow-none" href="{% url 'admins:add-parcel' %}">
+    <a class="nav-link dropdown-toggle arrow-none" href="{% url 'admins:parcel-search' %}">
+        <i class="fa fa-search mr-2"></i>Tracking
+    </a>
+</li>
+
+{#DASHBOARD#}
+<li class="nav-item">
+    <a class="nav-link dropdown-toggle arrow-none" href="{% url 'admins:parcel' %}">
         <i class="fa fa-check-circle mr-2"></i>Parcel
     </a>
 </li>
