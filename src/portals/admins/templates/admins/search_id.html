@@ -27,10 +27,19 @@
                     {% if parcel %}
                         <div>
                             <p>
-                                <b><a href="#">{{ parcel.sender }}</a></b> >
-                                <b><a href="#">{{ parcel.dispatchLocation }}</a></b> >
-                                <b><a href="#">{{ parcel.postman }}</a></b> >
-                                <b><a href="#">{{ parcel.receiver }}</a></b>
+                                <b class="text-success">sender <i class="fa fa-check-circle"></i></b> >
+                                <b class="text-success">Location <i class="fa fa-check-circle"></i></b> >
+                                {% if parcel.longitude and parcel.latitude %}
+                                    <b class="text-success">Postman <i class="fa fa-check-circle"></i></b>
+                                    {% if parcel.is_active %}
+                                        <b class="text-danger">Receiver <i class="fa fa-times-circle"></i></b>
+                                    {% else %}
+                                        <b class="text-success">Receiver <i class="fa fa-check-circle"></i></b>
+                                    {% endif %}
+                                {% else %}
+                                    <b class="text-danger">Postman <i class="fa fa-times-circle"></i></b>
+                                    <b class="text-danger">Receiver <i class="fa fa-times-circle"></i></b>
+                                {% endif %}
                             </p>
                         </div>
                     {% endif %}
