@@ -1,6 +1,8 @@
 import uuid
 
 from django.db import models
+from django_resized import ResizedImageField
+
 from src.accounts.models import User
 
 
@@ -8,6 +10,10 @@ class Parcel(models.Model):
     SERVICE_TYPES_CHOICES = (
         ('urgent', 'urgent'),
         ('normal', 'normal'),
+    )
+    qr_image = ResizedImageField(
+        upload_to='account/images/qrs/', null=True, blank=True, quality=75,
+        help_text='size of logo must be 100*100 and format must be png image file', crop=['middle', 'center']
     )
     tracking_id = models.CharField(max_length=100, blank=True, unique=True, default=uuid.uuid4)
     postal_charges = models.PositiveIntegerField(default=5)
