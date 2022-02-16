@@ -74,7 +74,6 @@ class CustomRegisterAccountView(APIView):
     permission_classes = [permissions.AllowAny]
 
     def post(self, request):
-        data = {}
         status_code = status.HTTP_400_BAD_REQUEST
         serializer = CustomRegisterAccountSerializer(data=request.data)
 

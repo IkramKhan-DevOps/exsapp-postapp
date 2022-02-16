@@ -29,7 +29,6 @@ from .models import (
     User
 )
 
-
 csrf_protect_m = method_decorator(csrf_protect)
 sensitive_post_parameters_m = method_decorator(sensitive_post_parameters())
 
@@ -39,9 +38,13 @@ class UserCustomAdmin(admin.ModelAdmin):
     change_user_password_template = None
     fieldsets = (
         (None, {'fields': ('username', 'password')}),
-        ('Personal info', {'fields': ('profile_image', 'first_name', 'last_name', 'email', 'phone_number', 'cnic', 'address')}),
+        ('Personal info', {'fields': (
+            'profile_image', 'first_name', 'last_name', 'latitude', 'longitude', 'type', 'email',
+            'phone_number',
+            'cnic', 'address')}),
         ('Permissions', {
-            'fields': ('is_active', 'is_staff', 'is_superuser', 'is_customer', 'is_postman', 'groups', 'user_permissions'),
+            'fields': (
+                'is_active', 'is_staff', 'is_superuser', 'is_customer', 'is_postman', 'groups', 'user_permissions'),
         }),
         ('Important dates', {'fields': ('last_login', 'date_joined')}),
     )
@@ -51,7 +54,7 @@ class UserCustomAdmin(admin.ModelAdmin):
     ]
     search_fields = [
         'username', 'first_name', 'last_name',
-        'email',  'cnic'
+        'email', 'cnic'
     ]
     list_filter = [
         'is_active', 'is_superuser', 'is_staff', 'is_customer', 'is_postman'
@@ -84,12 +87,12 @@ class UserCustomAdmin(admin.ModelAdmin):
 
     def get_urls(self):
         return [
-            path(
-                '<id>/password/',
-                self.admin_site.admin_view(self.user_change_password),
-                name='auth_user_password_change',
-            ),
-        ] + super().get_urls()
+                   path(
+                       '<id>/password/',
+                       self.admin_site.admin_view(self.user_change_password),
+                       name='auth_user_password_change',
+                   ),
+               ] + super().get_urls()
 
     def lookup_allowed(self, lookup, value):
         # Don't allow lookups involving passwords.

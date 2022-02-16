@@ -9,18 +9,16 @@ class Parcel(models.Model):
         ('urgent', 'urgent'),
         ('normal', 'normal'),
     )
-
     tracking_id = models.CharField(max_length=100, blank=True, unique=True, default=uuid.uuid4)
     postal_charges = models.PositiveIntegerField(default=5)
     service_type = models.CharField(max_length=255, choices=SERVICE_TYPES_CHOICES)
-    latitude = models.CharField(max_length=255, null=True, blank=True)
-    longitude = models.CharField(max_length=255, null=True, blank=True)
+    latitude = models.DecimalField(max_digits=9, decimal_places=6, default=0.00, blank=True, null=True)
+    longitude = models.DecimalField(max_digits=9, decimal_places=6, default=0.00, blank=True, null=True)
     dispatchLocation = models.CharField(max_length=1000)
     postman = models.ForeignKey('accounts.User', on_delete=models.CASCADE, related_name='postman', null=True, blank=True)
     sender = models.ForeignKey('accounts.User', on_delete=models.CASCADE, related_name='sender')
     receiver = models.ForeignKey('accounts.User', on_delete=models.CASCADE, related_name='receiver')
     details = models.TextField(null=True, blank=True)
-
     is_active = models.BooleanField(default=True)
     created_on = models.DateTimeField(auto_now_add=True)
 

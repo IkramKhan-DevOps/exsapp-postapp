@@ -29,7 +29,7 @@
                             <p>
                                 <b class="text-success">sender <i class="fa fa-check-circle"></i></b> >
                                 <b class="text-success">Location <i class="fa fa-check-circle"></i></b> >
-                                {% if parcel.longitude and parcel.latitude %}
+                                {% if parcel.postman %}
                                     <b class="text-success">Postman <i class="fa fa-check-circle"></i></b>
                                     {% if parcel.is_active %}
                                         <b class="text-danger">Receiver <i class="fa fa-times-circle"></i></b>
