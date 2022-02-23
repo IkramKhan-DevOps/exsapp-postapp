@@ -2,8 +2,8 @@ import notifications.urls
 from django.conf.urls import url
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.contrib.auth import views as auth_views
-from django.urls import path, include, re_path
+from django.urls import path, include
+
 from src.accounts.views import GoogleLoginView, CustomRegisterAccountView
 from .settings import DEBUG, MEDIA_ROOT, MEDIA_URL
 

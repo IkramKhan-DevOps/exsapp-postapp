@@ -24,7 +24,8 @@ class ParcelViewSet(generics.RetrieveUpdateAPIView):
 
     def get_object(self):
         parcel = Parcel.objects.get(tracking_id=self.kwargs.get('tracking_id'))
-        if self.request.user.type == 'Postman':
+        if self.request.user.type == 'Postman' \
+                or self.request.user.type == 'POSTMAN' or self.request.user.type == 'postman':
             parcel.postman = self.request.user
             parcel.save()
         return parcel
