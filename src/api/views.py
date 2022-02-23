@@ -20,12 +20,13 @@ class UserUpdateView(generics.RetrieveUpdateAPIView):
 class ParcelViewSet(generics.RetrieveUpdateAPIView):
     queryset = Parcel.objects.all()
     serializer_class = ParcelSerializer
-    permission_classes = [permissions.IsAuthenticated, PostmanCheck]
+    permission_classes = [permissions.IsAuthenticated]
 
     def get_object(self):
         parcel = Parcel.objects.get(tracking_id=self.kwargs.get('tracking_id'))
-        parcel.postman = self.request.user
-        parcel.save()
+        if self.request.user.type == 'Postman':
+            parcel.postman = self.request.user
+            parcel.save()
         return parcel
 
 

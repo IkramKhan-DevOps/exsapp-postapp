@@ -16,6 +16,7 @@ from django.views.generic import (
     ListView
 )
 
+from core.settings import BASE_DIR
 from src.api.models import Parcel
 
 User = get_user_model()
@@ -74,14 +75,9 @@ class SearchIDView(View):
 
 
 def get_qr_image(string):
-    # Generate QR code
     data = string
-
-    # Encoding data using make() function
     img = qrcode.make(data)
-
-    # Saving as an image file
-    img.save(f'C:\\Users\\Jhony Dev\\PycharmProjects\\cws-post\\media\\{string}-QR.png')
+    img.save(f'{BASE_DIR}\\media\\{string}-QR.png')
     return f'{string}-QR.png'
 
 
@@ -106,7 +102,7 @@ class TestView(View):
             image = get_qr_image(string)
             new_parcel.qr_image = image
             new_parcel.save()
-            return redirect(f'http://127.0.0.1:8000/media/{string}-QR.png')
+            return redirect('admins:parcel')
         return render(request, 'admins/test.html', {'form': form})
 
 

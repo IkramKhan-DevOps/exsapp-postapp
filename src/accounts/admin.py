@@ -50,7 +50,7 @@ class UserCustomAdmin(admin.ModelAdmin):
     )
     filter_horizontal = ('groups', 'user_permissions',)
     list_display = [
-        'username', 'email', 'is_active', 'is_staff', 'is_superuser', 'is_customer', 'is_postman', 'date_joined'
+        'username', 'email', 'is_active', 'type', 'is_superuser', 'date_joined'
     ]
     search_fields = [
         'username', 'first_name', 'last_name',
