@@ -1,0 +1,84 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block base_title %}
+    {{ object }}
+{% endblock %}
+
+
+{% block content %}
+
+    {# SAME FOR ALL #}
+    <div class="row justify-content-center">
+        <div class="col-6">
+
+            <div class="card">
+                <div class="card-body">
+
+                    <form method="post">
+                        {% csrf_token %}
+                        {{ form|crispy }}
+                        <div class="col-12">
+                            <button type="submit" id="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+{% endblock %}
+
+
+{% block base_internal_scripts %}
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+{% endblock %}
+
+
+{% block base_external_scripts %}
+    <script>
+        $(document).ready(function () {
+
+            const sender = $('#id_sender');
+            const receiver = $('#id_receiver');
+            const userError = $('#user-error');
+            userError.hide();
+
+
+            sender.blur(function () {
+                get_c_api_call_user_exists('/a/json/user/' + $(this).val() + '/exists/')
+            });
+
+            receiver.blur(function () {
+                get_c_api_call_user_exists('/a/json/user/' + $(this).val() + '/exists/')
+            });
+
+            function get_c_api_call_user_exists(url) {
+                $.get(url, function (data) {
+                    message_generator(data.flag)
+                });
+            }
+
+            function message_generator(is_successful) {
+                if (is_successful === true) {
+                    Swal.fire(
+                        'Success!',
+                        'User available with this username!',
+                        'success'
+                    )
+                } else {
+                    Swal.fire(
+                        'Failed!',
+                        'User not available with this username!',
+                        'error'
+                    )
+                }
+            }
+
+
+        });
+    </script>
+{% endblock %}

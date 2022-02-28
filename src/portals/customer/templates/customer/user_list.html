@@ -1,0 +1,93 @@
+{% extends 'core/base.html' %}
+{% load custom_tags %}
+
+{% block base_title %}
+    Users
+{% endblock %}
+
+{% block page_heading %}
+    Users
+{% endblock %}
+
+{% block content %}
+
+    <div class="row mb-2">
+        <div class="col-lg-12">
+            <a href="/admin/accounts/user/add/" class="btn btn-primary">Add New User</a>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+
+            <div class="card">
+                <div class="card-body">
+                    {% if user_list %}
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-centered table-nowrap mb-0">
+                                <thead class="thead-light">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Full Name</th>
+                                    <th>Username</th>
+                                    <th>Email</th>
+                                    <th>Type</th>
+                                    <th>Joined</th>
+                                    <th>Action</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+
+                                {% for object in user_list %}
+                                    <tr>
+                                        <td>{{ object.pk }}</td>
+                                        <td>{{ object.first_name }} {{ object.last_name }}</td>
+                                        <td><b>{{ object.username }}</b></td>
+                                        <td>{{ object.email }}</td>
+                                        <td>
+                                            {% if object.is_superuser %}
+                                                <b class="text-danger">Admin</b>
+                                            {% elif object.is_staff %}
+                                                <b class="text-warning">Staff</b>
+                                            {% elif object.is_customer %}
+                                                <b class="text-primary">Customer</b>
+                                            {% elif object.is_postman %}
+                                                <b class="text-success">Postman</b>
+                                            {% endif %}
+                                        </td>
+                                        <td>{{ object.date_joined }}</td>
+                                        <td>
+                                            <b><a href="/admin/accounts/user/{{ object.pk }}/change/"><i class="fa fa-eye"></i></a></b>
+                                        </td>
+
+                                    </tr>
+                                {% endfor %}
+
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <b class="text-danger">! No users found</b>
+                    {% endif %}
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+{% endblock %}
+
+{% block base_external_scripts %}
+
+    <script>
+        $(document).ready(function () {
+
+            $('label').hide();
+            $('input').addClass('form-control');
+            $('select').addClass('form-control');
+
+        });
+    </script>
+
+{% endblock %}

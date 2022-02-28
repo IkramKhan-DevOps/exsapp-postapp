@@ -1,0 +1,55 @@
+{% extends 'core/base.html' %}
+{% load custom_tags %}
+
+{% block base_title %}
+    Find a Parcel
+{% endblock %}
+
+{% block page_heading %}
+    Find a Parcel
+{% endblock %}
+
+{% block content %}
+
+
+
+    <div class="row justify-content-center">
+        <div class="col-6">
+
+            <div class="card">
+                <div class="card-body">
+                    <form method="get">
+                        <input class="form-control" type="search" id="search" name="search"
+                               placeholder="Enter tracking ID"><br>
+                        <button type="submit" class="btn btn-primary"><i class="fa fa-magnet"></i> Search</button>
+                    </form>
+                    <br>
+                    {% if parcel %}
+                        <div>
+                            <p>
+                                <b class="text-success">sender <i class="fa fa-check-circle"></i></b> >
+                                <b class="text-success">Location <i class="fa fa-check-circle"></i></b> >
+                                {% if parcel.postman %}
+                                    <b class="text-success">Postman <i class="fa fa-check-circle"></i></b>
+                                    {% if parcel.is_active %}
+                                        <b class="text-danger">Receiver <i class="fa fa-times-circle"></i></b>
+                                    {% else %}
+                                        <b class="text-success">Receiver <i class="fa fa-check-circle"></i></b>
+                                    {% endif %}
+                                {% else %}
+                                    <b class="text-danger">Postman <i class="fa fa-times-circle"></i></b>
+                                    <b class="text-danger">Receiver <i class="fa fa-times-circle"></i></b>
+                                {% endif %}
+                            </p>
+                        </div>
+                    {% endif %}
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+{% endblock %}
+

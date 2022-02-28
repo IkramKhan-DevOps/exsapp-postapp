@@ -1,0 +1,76 @@
+{% extends 'core/base.html' %}
+{% load custom_tags %}
+
+{% block base_title %}
+    Parcels
+{% endblock %}
+
+{% block page_heading %}
+    My Parcels Parcels
+{% endblock %}
+
+{% block content %}
+
+    <div class="row">
+        <div class="col-12">
+
+            <div class="card">
+                <div class="card-body">
+                    {% if parcel_list %}
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-centered table-nowrap mb-0">
+                                <thead class="thead-light">
+                                <tr>
+                                    <th>Postal Charges</th>
+                                    <th>Location</th>
+                                    <th>Postman</th>
+                                    <th>Sender</th>
+                                    <th>Receiver</th>
+                                    <th>Traking ID</th>
+                                    <th>Created On</th>
+                                    <th>QR Code</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+
+                                {% for object in parcel_list %}
+                                    <tr>
+                                        <td>{{ object.postal_charges }}</td>
+                                        <td>{{ object.dispatchLocation }}</td>
+                                        <td>{{ object.postman }}</td>
+                                        <td>{{ object.sender }}</td>
+                                        <td>{{ object.receiver }}</td>
+                                        <td>{{ object.tracking_id }}</td>
+                                        <td>{{ object.created_on }}</td>
+                                        <td><a href="/media/{{ object.tracking_id }}-QR.png">QR code</a></td>
+                                    </tr>
+                                {% endfor %}
+
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <b class="text-danger">! No parcels found</b>
+                    {% endif %}
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+{% endblock %}
+
+{% block base_external_scripts %}
+
+    <script>
+        $(document).ready(function () {
+
+            $('label').hide();
+            $('input').addClass('form-control');
+            $('select').addClass('form-control');
+
+        });
+    </script>
+
+{% endblock %}

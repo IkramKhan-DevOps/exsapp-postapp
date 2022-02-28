@@ -8,11 +8,14 @@ class UserProfileSerializer(serializers.ModelSerializer):
         model = User
         fields = [
             'first_name', 'last_name', 'phone_number', 'latitude', 'longitude', 'email', 'profile_image', 'is_postman',
-            'is_customer'
+            'is_customer', 'address'
         ]
 
 
 class ParcelSerializer(serializers.ModelSerializer):
+    receiver = UserProfileSerializer(many=False, read_only=True)
+    sender = UserProfileSerializer(many=False, read_only=True)
+
     class Meta:
         model = Parcel
         fields = '__all__'

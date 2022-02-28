@@ -1,28 +1,20 @@
 from allauth.account.models import EmailAddress
+from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter
 from allauth.socialaccount.providers.oauth2.client import OAuth2Client
+from dj_rest_auth.registration.views import SocialLoginView
 from django.contrib import messages
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
-from django.contrib.sites.shortcuts import get_current_site
-from django.core.mail import EmailMessage
 from django.shortcuts import redirect, render
-from django.template.loader import render_to_string
 from django.utils.decorators import method_decorator
-from django.utils.encoding import force_text
-from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.views.generic import View
-from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter
-from dj_rest_auth.registration.views import SocialLoginView
-from jwt.utils import force_bytes
 from rest_framework import permissions, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from core.settings import GOOGLE_CALLBACK_ADDRESS
 from src.accounts.forms import UserProfileForm
-from src.accounts.models import User
 from src.accounts.serializers import CustomRegisterAccountSerializer
-from src.accounts.tokens import account_activation_token
 
 
 @method_decorator(login_required, name='dispatch')
@@ -76,7 +68,6 @@ class CustomRegisterAccountView(APIView):
     def post(self, request):
         status_code = status.HTTP_400_BAD_REQUEST
         serializer = CustomRegisterAccountSerializer(data=request.data)
-
         if serializer.is_valid():
             user = serializer.save()
             EmailAddress.objects.create(user=user, email=user.email, primary=True, verified=False)

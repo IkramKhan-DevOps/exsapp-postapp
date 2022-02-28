@@ -3,37 +3,60 @@
 
 {#DASHBOARD#}
 <li class="nav-item">
-    <a class="nav-link dropdown-toggle arrow-none" href="{% url 'admins:dashboard' %}">
-        <i class="bx bx-home-circle mr-2"></i>Admin Dashboard
-    </a>
+
+    {% if request.user.is_superuser %}
+        <a class="nav-link dropdown-toggle arrow-none" href="{% url 'admins:dashboard' %}">
+            <i class="bx bx-home-circle mr-2"></i>Dashboard
+        </a>
+    {% else %}
+        <a class="nav-link dropdown-toggle arrow-none" href="{% url 'customer:dashboard' %}">
+            <i class="bx bx-home-circle mr-2"></i>Dashboard
+        </a>    {% endif %}
 </li>
 
 {#DASHBOARD#}
 <li class="nav-item">
-    <a class="nav-link dropdown-toggle arrow-none" href="{% url 'admins:parcel-search' %}">
-        <i class="fa fa-search mr-2"></i>Tracking
-    </a>
+
+    {% if request.user.is_superuser %}
+        <a class="nav-link dropdown-toggle arrow-none" href="{% url 'admins:parcel-search' %}">
+            <i class="bx bx-home-circle mr-2"></i>Parcel Search
+        </a>
+    {% else %}
+        <a class="nav-link dropdown-toggle arrow-none" href="{% url 'customer:parcel-search' %}">
+            <i class="bx bx-home-circle mr-2"></i>Parcel Search
+        </a>    {% endif %}
 </li>
 
 {#DASHBOARD#}
 <li class="nav-item">
-    <a class="nav-link dropdown-toggle arrow-none" href="{% url 'admins:parcel' %}">
-        <i class="fa fa-check-circle mr-2"></i>Parcel
-    </a>
+
+    {% if request.user.is_superuser %}
+        <a class="nav-link dropdown-toggle arrow-none" href="{% url 'admins:parcel' %}">
+            <i class="bx bx-home-circle mr-2"></i>Parcels
+        </a>
+    {% else %}
+        <a class="nav-link dropdown-toggle arrow-none" href="{% url 'customer:parcel' %}">
+            <i class="bx bx-home-circle mr-2"></i>Parcels
+        </a>    {% endif %}
 </li>
 
 {#DASHBOARD#}
 <li class="nav-item">
-    <a class="nav-link dropdown-toggle arrow-none" href="{% url 'admins:user' %}">
-        <i class="fa fa-user mr-2"></i>Users
-    </a>
+    {% if request.user.is_superuser %}
+        <a class="nav-link dropdown-toggle arrow-none" href="{% url 'admins:user' %}">
+            <i class="bx bx-home-circle mr-2"></i>Users
+        </a>
+    {% endif %}
 </li>
 
 {#DASHBOARD#}
 <li class="nav-item">
-    <a class="nav-link dropdown-toggle arrow-none" href="/admin/">
-        <i class="fa fa-code mr-2"></i>Root
-    </a>
+    {% if request.user.is_superuser %}
+        <a class="nav-link dropdown-toggle arrow-none" href="/admin/">
+            <i class="fa fa-code mr-2"></i>Root
+        </a>
+    {% endif %}
+
 </li>
 
 

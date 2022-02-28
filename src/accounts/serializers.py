@@ -13,7 +13,7 @@ class CustomRegisterAccountSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = [
-            'first_name', 'last_name', 'username', 'email', 'password', 'password2', 'phone_number'
+            'first_name', 'last_name', 'username', 'email', 'password', 'password2', 'phone_number', 'cnic'
         ]
         extra_kwargs = {
             'password': {'write_only': True}
@@ -25,12 +25,12 @@ class CustomRegisterAccountSerializer(serializers.ModelSerializer):
             last_name=self.validated_data['last_name'],
             email=self.validated_data['email'],
             username=self.validated_data['username'],
-            phone_number= self.validated_data['phone_number']
+            phone_number=self.validated_data['phone_number'],
+            cnic=self.validated_data['cnic']
         )
         password = self.validated_data['password']
         password2 = self.validated_data['password2']
         email = self.validated_data['email']
-
         if password != password2:
             raise serializers.ValidationError({'password': 'Passwords must be matched'})
         if EmailAddress.objects.filter(email=email):
@@ -42,6 +42,7 @@ class CustomRegisterAccountSerializer(serializers.ModelSerializer):
 
 class RegisterSerializerRestAPI(RegisterSerializer):
     phone_number = serializers.CharField(max_length=30)
+
     # profile_image = serializers.ImageField(max_length=None, allow_empty_file=False, use_url=True)
 
     @transaction.atomic
