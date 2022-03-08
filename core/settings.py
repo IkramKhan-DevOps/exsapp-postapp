@@ -10,6 +10,7 @@ ROOT_URLCONF = 'core.urls'
 AUTH_USER_MODEL = 'accounts.User'
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
+LINUX = False
 DEBUG = True
 SERVER = False
 

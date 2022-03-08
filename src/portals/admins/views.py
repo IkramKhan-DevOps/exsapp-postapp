@@ -15,6 +15,7 @@ from django.views.generic import (
     TemplateView,
     ListView
 )
+from core.settings import LINUX
 
 from core.settings import BASE_DIR
 from src.api.models import Parcel
@@ -77,7 +78,10 @@ class SearchIDView(View):
 def get_qr_image(string):
     data = string
     img = qrcode.make(data)
-    img.save(f'{BASE_DIR}\\media\\{string}-QR.png')
+    if not LINUX:
+        img.save(f'{BASE_DIR}\\media\\{string}-QR.png')
+    else:
+        img.save(f'{BASE_DIR}/media/{string}-QR.png')
     return f'{string}-QR.png'
 
 

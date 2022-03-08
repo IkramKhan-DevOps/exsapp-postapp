@@ -39,7 +39,6 @@ class PostOffice(models.Model):
     service_manager = models.ForeignKey(User, on_delete=models.CASCADE)
     office_address = models.TextField()
     parcels = models.ManyToManyField(Parcel)
-
     is_active = models.BooleanField(default=True)
     created_on = models.DateTimeField(auto_now_add=True)
 
