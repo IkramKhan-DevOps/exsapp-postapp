@@ -1,5 +1,5 @@
-import notifications.urls
-from django.conf.urls import url
+# import notifications.urls
+# from django.conf.urls import url
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
@@ -29,7 +29,7 @@ urlpatterns = [
     path('api/', include('src.api.urls', namespace='api')),
 
     # NOTIFICATIONS APPLICATION ---------------------------------------------------------------------------------
-    url('^inbox/notifications/', include(notifications.urls, namespace='notifications')),
+    # url('^inbox/notifications/', include(notifications.urls, namespace='notifications')),
 
 ]
 

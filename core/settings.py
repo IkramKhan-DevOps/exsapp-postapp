@@ -63,8 +63,6 @@ INSTALLED_APPS = [
     'src.portals.admins',
     'src.portals.customer',
 
-    # END
-
 ]
 
 """ MIDDLE WARES ----------------------------------------------------------------------------"""
