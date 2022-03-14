@@ -1,0 +1,62 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+
+    <meta charset="utf-8"/>
+<link rel="icon" href="{% static "core/images/logo_100.png" %}">
+    <title>App |
+        {% block base_title %}
+            Home
+        {% endblock %}
+    </title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="Project - Home page" name="description"/>
+    <meta content="mark" name="author"/>
+    <meta content="multirole-business" name="organization"/>
+
+{#    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">#}
+{#    <link rel="stylesheet" href="{% static 'core/theme/css/app-dark.min.css' %}">#}
+{#    <link rel="stylesheet" href="{% static 'core/theme/css/bootstrap-dark.min.css' %}">#}
+
+    <link rel="stylesheet" href="{% static 'core/theme/css/app.min.css' %}">
+    <link rel="stylesheet" href="{% static 'core/theme/css/bootstrap.min.css' %}">
+
+    <link rel="stylesheet" href="{% static 'core/theme/css/icons.min.css' %}">
+    {% block base_css_links %}
+
+    {% endblock %}
+
+</head>
+
+<body data-spy="scroll" data-target="#topnav-menu" data-offset="60">
+
+{% block base_header %}
+    {% include 'website/include/header.html' %}
+{% endblock %}
+
+{% block base_content %}{% endblock %}
+
+{% block base_footer %}
+    {% include 'website/include/footer.html' %}
+{% endblock %}
+
+<script src="{% static 'core/libs/jquery/jquery.min.js' %}"></script>
+<script src="{% static 'core/libs/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'core/libs/metismenu/metisMenu.min.js' %}"></script>
+<script src="{% static 'core/libs/simplebar/simplebar.min.js' %}"></script>
+<script src="{% static 'core/libs/node-waves/waves.min.js' %}"></script>
+
+<script src="{% static 'core/libs/jquery.easing/jquery.easing.min.js' %}"></script>
+
+<script src="{% static 'core/libs/jquery-countdown/jquery.countdown.min.js' %}"></script>
+<script src="{% static 'core/libs/owl.carousel/owl.carousel.min.js' %}"></script>
+<script src="{% static 'core/js/pages/ico-landing.init.js' %}"></script>
+<script src="{% static 'core/js/app.js' %}"></script>
+
+{% block base_internal_js %}{% endblock %}
+
+</body>
+</html>
+{% block base_external_js %}{% endblock %}

@@ -1,0 +1,244 @@
+{% extends 'website/base.html' %}
+{% load static %}
+{% load custom_tags %}
+
+{% block base_content %}
+    <!-- hero section start -->
+    <section class="section hero-section bg-ico-hero" id="home">
+        <div class="bg-overlay bg-primary"></div>
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-5">
+                    <div class="text-white-50">
+                        <h1 class="text-white font-weight-semibold mb-3 hero-title">
+                            POST MAN
+                        </h1>
+                        <p class="font-size-14">{% lorem 1 p %}</p>
+
+                    </div>
+
+
+                </div>
+                <div class="col-lg-5 col-md-8 col-sm-10 ml-lg-auto">
+                    <div class="card overflow-hidden mb-0 mt-5 mt-lg-0">
+                        <div class="card-header text-center">
+                            <h5 class="mb-0">track your parcel</h5>
+                        </div>
+                        <div class="card-body">
+                            <form method="get">
+                                <div class="input-group">
+
+                                    <input type="text" id="search" name="search" class="form-control"
+                                           placeholder="Parcel ID here">
+                                    <button type="submit" class="btn btn-primary">Search</button>
+
+                                </div>
+                            </form>
+
+                            {% if parcel %}
+                                <div class="" style="text-align: left;">
+                                    <p class="text-left mt-2">
+                                        <b class="text-success">sender <i class="fa fa-check-circle"></i></b> >
+                                        <b class="text-success">Location <i class="fa fa-check-circle"></i></b> >
+                                        {% if parcel.postman %}
+                                            <b class="text-success">Postman <i class="fa fa-check-circle"></i></b>
+                                            {% if parcel.is_active %}
+                                                <b class="text-danger">Receiver <i class="fa fa-times-circle"></i></b>
+                                            {% else %}
+                                                <b class="text-success">Receiver <i class="fa fa-check-circle"></i></b>
+                                            {% endif %}
+                                        {% else %}
+                                            <b class="text-danger">Postman <i class="fa fa-times-circle"></i></b>
+                                            <b class="text-danger">Receiver <i class="fa fa-times-circle"></i></b>
+                                        {% endif %}
+                                    </p>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- end row -->
+        </div>
+        <!-- end container -->
+    </section>
+    <!-- hero section end -->
+
+    <section class="section bg-white p-0">
+        <div class="container">
+            <div class="currency-price">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="media">
+                                    <div class="avatar-xs mr-3">
+                                            <span class="avatar-title rounded-circle bg-soft-warning text-warning font-size-18">
+                                                <i class="mdi mdi-ethereum"></i>
+                                            </span>
+                                    </div>
+                                    <div class="media-body">
+                                        <p class="text-muted">Fast</p>
+                                        <h5>Extremely fast</h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="media">
+                                    <div class="avatar-xs mr-3">
+                                            <span class="avatar-title rounded-circle bg-soft-primary text-primary font-size-18">
+                                                <i class="mdi mdi-bitcoin"></i>
+                                            </span>
+                                    </div>
+                                    <div class="media-body">
+                                        <p class="text-muted">Safe</p>
+                                        <h5>Safe aur Secure</h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="media">
+                                    <div class="avatar-xs mr-3">
+                                            <span class="avatar-title rounded-circle bg-soft-info text-info font-size-18">
+                                                <i class="mdi mdi-litecoin"></i>
+                                            </span>
+                                    </div>
+                                    <div class="media-body">
+                                        <p class="text-muted">Managed</p>
+                                        <h5>Well Managed</h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- end row -->
+            </div>
+        </div>
+        <!-- end container -->
+    </section>
+
+    <section class="section" id="features">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="text-center mb-5">
+                        <div class="small-title">Features</div>
+                        <h4>Key features of the product</h4>
+                    </div>
+                </div>
+            </div>
+
+            {% if modules %}
+                {% for module in modules %}
+
+                    <!-- end row -->
+
+                    <div class="row align-items-center pt-4">
+                        {% if forloop.counter == 1 or forloop.counter == 3 %}
+                            <div class="col-md-6 col-sm-8">
+                                <div>
+                                    <img src="{{ module.pic.url }}" alt=""
+                                         class="img-fluid mx-auto d-block">
+                                </div>
+                            </div>
+                            <div class="col-md-5 ml-auto">
+                                <div class="mt-4 mt-md-auto">
+                                    <div class="d-flex align-items-center mb-2">
+                                        <div class="features-number font-weight-semibold display-4 mr-3">
+                                            0{{ module.sequence }}</div>
+                                        <h4 class="mb-0">{{ module.heading }}</h4>
+                                    </div>
+                                    <p class="text-muted">{{ module.description|safe }}</p>
+                                </div>
+                            </div>
+                        {% else %}
+                            <div class="col-md-5 ml-auto">
+                                <div class="mt-4 mt-md-auto">
+                                    <div class="d-flex align-items-center mb-2">
+                                        <div class="features-number font-weight-semibold display-4 mr-3">
+                                            0{{ module.sequence }}</div>
+                                        <h4 class="mb-0">{{ module.heading }}</h4>
+                                    </div>
+                                    <p class="text-muted">{{ module.description|safe }}</p>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 col-sm-8">
+                                <div>
+                                    <img src="{{ module.pic.url }}" alt=""
+                                         class="img-fluid mx-auto d-block">
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+
+                {% endfor %}
+            {% else %}
+                <div class="row align-items-center pt-4">
+                    <div class="col-md-6 col-sm-8">
+                        <div>
+                            <img src="{% static 'tarbazar/logo-light.png' %}" alt=""
+                                 class="img-fluid mx-auto d-block">
+                        </div>
+                    </div>
+                    <div class="col-md-5 ml-auto">
+                        <div class="mt-4 mt-md-auto">
+                            <div class="d-flex align-items-center mb-2">
+                                <div class="features-number font-weight-semibold display-4 mr-3">
+                                    01
+                                </div>
+                                <h4 class="mb-0">HEAD1</h4>
+                            </div>
+                            <p class="text-muted">{% lorem 20 w %}</p>
+                        </div>
+                    </div>
+                    <div class="col-md-5 ml-auto">
+                        <div class="mt-4 mt-md-auto">
+                            <div class="d-flex align-items-center mb-2">
+                                <div class="features-number font-weight-semibold display-4 mr-3">
+                                    02
+                                </div>
+                                <h4 class="mb-0">HEAD2</h4>
+                            </div>
+                            <p class="text-muted">{% lorem 10 w %}</p>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-sm-8">
+                        <div>
+                            <img src="{% static 'tarbazar/mastercard.jpg' %}" alt=""
+                                 class="img-fluid mx-auto d-block">
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+
+
+        </div>
+        <!-- end container -->
+    </section>
+    <!-- Features end -->
+
+{% endblock %}
+
+
+{% block base_external_js %}
+    <script>
+        $(document).ready(function () {
+
+            $('label').hide();
+            $('input').addClass('form-control mb-2');
+            $('select').addClass('form-control mb-2');
+
+        });
+    </script>
+{% endblock %}

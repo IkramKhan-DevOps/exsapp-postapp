@@ -6,6 +6,7 @@ from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import user_passes_test, login_required
 from django.core.files.uploadedfile import InMemoryUploadedFile
+from django.db import IntegrityError
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.utils.decorators import method_decorator
@@ -92,7 +93,6 @@ class TestView(View):
         context = {
             'form': ParcelForm()
         }
-        print('SEARCH PARCEL TABLE')
         return render(request, 'admins/test.html', context=context)
 
     def post(self, request):
@@ -123,3 +123,27 @@ class UserExistsJSON(View):
             'flag': flag,
         }
         return JsonResponse(data=response, safe=False)
+
+
+class AddUserView(View):
+
+    def post(self, request):
+        phone = request.POST.get('phone')
+        name = request.POST.get('name')
+        cnic = request.POST.get('cnic')
+        email = request.POST.get('email')
+        address = request.POST.get('address')
+
+        if phone and name and cnic and email and address:
+            try:
+                user = User.objects.create_user(
+                    username=cnic, cnic=cnic, email=email, address=address, password=f'default@{phone}',
+                    is_active=True, is_customer=True, first_name=name
+                )
+                messages.success(request, f"New user {user.first_name} created successfully")
+            except IntegrityError:
+                messages.error(request, "Username email and cnic must be unique")
+        else:
+            messages.error(request, "Please fill out all the fields to create new user")
+
+        return redirect('admins:add-parcel')
