@@ -30,12 +30,10 @@ admin_nocache_decorators = [login_required, user_passes_test(lambda u: u.is_supe
 
 
 @method_decorator(admin_decorators, name='dispatch')
-class DashboardView(TemplateView):
-    template_name = 'admins/dashboard.html'
+class DashboardView(View):
 
-    def get_context_data(self, **kwargs):
-        context = super(DashboardView, self).get_context_data(**kwargs)
-        return context
+    def get(self, request):
+        return redirect('admins:parcel-search')
 
 
 @method_decorator(admin_decorators, name='dispatch')
@@ -125,6 +123,7 @@ class UserExistsJSON(View):
         return JsonResponse(data=response, safe=False)
 
 
+@method_decorator(admin_decorators, name='dispatch')
 class AddUserView(View):
 
     def post(self, request):
