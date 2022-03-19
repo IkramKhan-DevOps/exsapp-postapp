@@ -5,21 +5,23 @@ from django import forms
 from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import user_passes_test, login_required
+from django.contrib.auth.forms import UserCreationForm
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.db import IntegrityError
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
+from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views import View
 from django.views.decorators.cache import never_cache
 from django.views.generic import (
     TemplateView,
-    ListView
-)
+    ListView,
+    UpdateView)
 from core.settings import LINUX
 
 from core.settings import BASE_DIR
-from src.api.models import Parcel
+from src.api.models import Parcel, PostOffice
 
 User = get_user_model()
 
@@ -36,10 +38,18 @@ class DashboardView(View):
         return redirect('admins:parcel-search')
 
 
+""" ------------------------------------------------------------------- """
+
+
 @method_decorator(admin_decorators, name='dispatch')
 class UserListView(ListView):
     queryset = User.objects.all()
     template_name = 'admins/user_list.html'
+
+
+
+
+""" ------------------------------------------------------------------- """
 
 
 @method_decorator(admin_decorators, name='dispatch')
@@ -127,13 +137,17 @@ class UserExistsJSON(View):
 class AddUserView(View):
 
     def post(self, request):
+
         phone = request.POST.get('phone')
         name = request.POST.get('name')
         cnic = request.POST.get('cnic')
         email = request.POST.get('email')
         address = request.POST.get('address')
 
-        if phone and name and cnic and email and address:
+        if phone and name and cnic and address:
+            if not email:
+                email = f"{cnic}@gmail.com"
+
             try:
                 user = User.objects.create_user(
                     username=cnic, cnic=cnic, email=email, address=address, password=f'default@{phone}',
@@ -146,3 +160,39 @@ class AddUserView(View):
             messages.error(request, "Please fill out all the fields to create new user")
 
         return redirect('admins:add-parcel')
+
+
+@method_decorator(admin_decorators, name='dispatch')
+class AddSuperUserView(View):
+
+    def get(self, request):
+        context = {'offices': PostOffice.objects.all()}
+        return render(request, template_name='admins/super_user_form.html', context=context)
+
+    def post(self, request):
+
+        phone = request.POST.get('phone')
+        name = request.POST.get('name')
+        cnic = request.POST.get('cnic')
+        email = request.POST.get('email')
+        address = request.POST.get('address')
+        office = request.POST.get('office')
+
+        if phone and name and cnic and address and office:
+            if not email:
+                email = f"{cnic}@gmail.com"
+
+            try:
+                user = User.objects.create_user(
+                    username=cnic, cnic=cnic, email=email, address=address, password=f'default@{phone}',
+                    is_active=True, is_customer=False, first_name=name, office=PostOffice.objects.get(pk=office), is_superuser=True
+                )
+                user.save()
+                messages.success(request, f"New admin user {user.first_name} created successfully")
+                return redirect('admins:user')
+            except IntegrityError:
+                messages.error(request, "Username email and cnic must be unique")
+        else:
+            messages.error(request, "Please fill out all the fields to create new user")
+
+        return redirect('admins:add-super-user')

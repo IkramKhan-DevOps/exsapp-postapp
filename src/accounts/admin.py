@@ -39,7 +39,7 @@ class UserCustomAdmin(admin.ModelAdmin):
     fieldsets = (
         (None, {'fields': ('username', 'password')}),
         ('Personal info', {'fields': (
-            'profile_image', 'first_name', 'last_name', 'latitude', 'longitude', 'type', 'email',
+            'profile_image', 'first_name', 'last_name', 'latitude', 'longitude', 'email',
             'phone_number',
             'cnic', 'address')}),
         ('Permissions', {
@@ -50,7 +50,7 @@ class UserCustomAdmin(admin.ModelAdmin):
     )
     filter_horizontal = ('groups', 'user_permissions',)
     list_display = [
-        'username', 'email', 'is_active', 'type', 'is_superuser', 'date_joined'
+        'username', 'email', 'is_active', 'is_superuser', 'date_joined'
     ]
     search_fields = [
         'username', 'first_name', 'last_name',

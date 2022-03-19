@@ -2,11 +2,16 @@ import uuid
 
 from django.db import models
 from django_resized import ResizedImageField
-
 from src.accounts.models import User
 
 
 class Parcel(models.Model):
+    STATUS_CHOICES = (
+        ('cus', 'Customer'),
+        ('ssm', 'Source Service Manager'),
+        ('dsm', 'Destination Service Manager'),
+        ('pos', 'Postman'),
+    )
     SERVICE_TYPES_CHOICES = (
         ('urgent', 'urgent'),
         ('normal', 'normal'),
@@ -21,10 +26,12 @@ class Parcel(models.Model):
     latitude = models.DecimalField(max_digits=9, decimal_places=6, default=0.00, blank=True, null=True)
     longitude = models.DecimalField(max_digits=9, decimal_places=6, default=0.00, blank=True, null=True)
     dispatchLocation = models.CharField(max_length=1000)
-    postman = models.ForeignKey('accounts.User', on_delete=models.CASCADE, related_name='postman', null=True, blank=True)
-    sender = models.ForeignKey('accounts.User', on_delete=models.CASCADE, related_name='sender')
-    receiver = models.ForeignKey('accounts.User', on_delete=models.CASCADE, related_name='receiver')
+    customer = models.ForeignKey('accounts.User', on_delete=models.CASCADE, related_name='sent_by', null=True, blank=True)
+    source_service_manager = models.ForeignKey('accounts.User', on_delete=models.CASCADE, related_name='source_manager', null=True, blank=True)
+    destination_service_manager = models.ForeignKey('accounts.User', on_delete=models.CASCADE, related_name='destination_manager')
     details = models.TextField(null=True, blank=True)
+
+    status = models.CharField(max_length=3, default='cus')
     is_active = models.BooleanField(default=True)
     created_on = models.DateTimeField(auto_now_add=True)
 
@@ -36,9 +43,8 @@ class Parcel(models.Model):
 
 
 class PostOffice(models.Model):
-    service_manager = models.ForeignKey(User, on_delete=models.CASCADE)
-    office_address = models.TextField()
-    parcels = models.ManyToManyField(Parcel)
+
+    office_address = models.CharField(max_length=255)
     is_active = models.BooleanField(default=True)
     created_on = models.DateTimeField(auto_now_add=True)
 

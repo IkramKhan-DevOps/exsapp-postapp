@@ -19,11 +19,6 @@ Then do next ...
 
 
 class User(AbstractUser):
-    TYPES_OF_USERS = (
-        ("CUSTOMER", 'Customer'),
-        ("MANAGER", 'Manager'),
-        ("POSTMAN", 'Postman')
-    )
     profile_image = ResizedImageField(
         upload_to='account/images/profiles/', null=True, blank=True, size=[100, 100], quality=75, force_format='PNG',
         help_text='size of logo must be 100*100 and format must be png image file', crop=['middle', 'center']
@@ -33,7 +28,7 @@ class User(AbstractUser):
     address = models.TextField(max_length=30, null=True, blank=True)
     latitude = models.DecimalField(max_digits=9, decimal_places=6, default=0.00, blank=True, null=True)
     longitude = models.DecimalField(max_digits=9, decimal_places=6, default=0.00, blank=True, null=True)
-    type = models.CharField(max_length=20, default='CUSTOMER', choices=TYPES_OF_USERS)
+    office = models.ForeignKey('api.PostOffice', null=True, blank=True, on_delete=models.SET_NULL)
     is_customer = models.BooleanField(default=True)
     is_postman = models.BooleanField(default=False)
 

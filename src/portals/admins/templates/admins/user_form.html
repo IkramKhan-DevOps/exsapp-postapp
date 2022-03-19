@@ -1,0 +1,38 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block base_title %}
+    Add Admin
+{% endblock %}
+
+
+{% block content %}
+
+    {# SAME FOR ALL #}
+    <div class="row justify-content-center">
+        <div class="col-6">
+
+            <div class="card">
+                <div class="card-body">
+
+                    <form action="{% url 'admins:add-super-user' %}" method="post">
+                        {% csrf_token %}
+                        <input required id="phone" name="phone" class="form-control mb-2" type="text" placeholder="Phone">
+                        <input required id="name" name="name" class="form-control mb-2" type="text" placeholder="Name">
+                        <input required id="cnic" name="cnic" class="form-control mb-2" type="text" placeholder="CNIC">
+                        <input id="email" name="email" class="form-control mb-2" type="text" placeholder="Email">
+                        <textarea required id="address" name="address" class="form-control mb-2" placeholder="Address"></textarea>
+                        <div>
+                            <button type="submit" class="btn btn-primary"><i class="fa fa-user-plus"></i> Create
+                            </button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+{% endblock %}

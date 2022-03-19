@@ -3,7 +3,7 @@
 {% load crispy_forms_tags %}
 
 {% block base_title %}
-    {{ object }}
+    Add/Update Parcel
 {% endblock %}
 
 
@@ -39,11 +39,11 @@
                 <div class="card-body">
                     <form action="{% url 'admins:add-user' %}" method="post">
                         {% csrf_token %}
-                        <input id="phone" name="phone" class="form-control mb-2" type="text" placeholder="Phone">
-                        <input id="name" name="name" class="form-control mb-2" type="text" placeholder="Name">
-                        <input id="cnic" name="cnic" class="form-control mb-2" type="text" placeholder="CNIC">
+                        <input required id="phone" name="phone" class="form-control mb-2" type="text" placeholder="Phone">
+                        <input required id="name" name="name" class="form-control mb-2" type="text" placeholder="Name">
+                        <input required id="cnic" name="cnic" class="form-control mb-2" type="text" placeholder="CNIC">
                         <input id="email" name="email" class="form-control mb-2" type="text" placeholder="Email">
-                        <textarea id="address" name="address" class="form-control mb-2" placeholder="Address"></textarea>
+                        <textarea required id="address" name="address" class="form-control mb-2" placeholder="Address"></textarea>
 
                         <div>
                             <button type="submit" class="btn btn-primary"><i class="fa fa-user-plus"></i> Create
