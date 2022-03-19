@@ -24,7 +24,9 @@ class User(AbstractUser):
         help_text='size of logo must be 100*100 and format must be png image file', crop=['middle', 'center']
     )
     phone_number = models.CharField(max_length=30, null=True, blank=True)
-    cnic = models.CharField(max_length=13, null=False, blank=False, help_text="13 digits cnic without -", unique=True)
+    cnic = models.CharField(max_length=13, null=True, blank=True,
+                            help_text="13 digits cnic without -"
+                            )
     address = models.TextField(max_length=30, null=True, blank=True)
     latitude = models.DecimalField(max_digits=9, decimal_places=6, default=0.00, blank=True, null=True)
     longitude = models.DecimalField(max_digits=9, decimal_places=6, default=0.00, blank=True, null=True)

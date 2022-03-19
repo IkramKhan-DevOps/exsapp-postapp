@@ -47,8 +47,6 @@ class UserListView(ListView):
     template_name = 'admins/user_list.html'
 
 
-
-
 """ ------------------------------------------------------------------- """
 
 

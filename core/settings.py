@@ -95,6 +95,10 @@ REST_AUTH_REGISTER_SERIALIZERS = {
     'REGISTER_SERIALIZER': 'src.accounts.serializers.RegisterSerializerRestAPI',
 }
 
+ACCOUNT_FORMS = {
+    'signup': 'src.accounts.forms.MyCustomSignupForm',
+}
+
 AUTHENTICATION_BACKENDS = [
     # Needed to login by username in Django admin, regardless of `allauth`
     'django.contrib.auth.backends.ModelBackend',
