@@ -45,7 +45,7 @@ class ParcelListView(ListView):
     template_name = 'customer/parcel_list.html'
 
     def get_queryset(self):
-        return Parcel.objects.filter(sender=self.request.user)
+        return Parcel.objects.filter(customer=self.request.user)
 
 
 class ParcelForm(forms.ModelForm):

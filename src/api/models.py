@@ -28,10 +28,12 @@ class Parcel(models.Model):
     dispatchLocation = models.CharField(max_length=1000)
     customer = models.ForeignKey('accounts.User', on_delete=models.CASCADE, related_name='sent_by', null=True, blank=True)
     source_service_manager = models.ForeignKey('accounts.User', on_delete=models.CASCADE, related_name='source_manager', null=True, blank=True)
-    destination_service_manager = models.ForeignKey('accounts.User', on_delete=models.CASCADE, related_name='destination_manager')
+    destination_service_manager = models.ForeignKey('accounts.User', on_delete=models.CASCADE, related_name='destination_manager', null=True, blank=True)
+    receiver = models.ForeignKey('accounts.User', on_delete=models.CASCADE, related_name='receiver', null=True, blank=True)
+    postman = models.ForeignKey('accounts.User', on_delete=models.CASCADE, related_name='postman', null=True, blank=True)
     details = models.TextField(null=True, blank=True)
 
-    status = models.CharField(max_length=3, default='cus')
+    status = models.CharField(max_length=3, default='ssm')
     is_active = models.BooleanField(default=True)
     created_on = models.DateTimeField(auto_now_add=True)
 

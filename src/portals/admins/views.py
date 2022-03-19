@@ -59,6 +59,7 @@ class ParcelListView(ListView):
 class ParcelForm(forms.ModelForm):
     sender = forms.CharField()
     receiver = forms.CharField()
+    destination_service_manager = forms.CharField()
 
     class Meta:
         model = Parcel
@@ -104,8 +105,12 @@ class TestView(View):
     def post(self, request):
         form = ParcelForm(data=request.POST)
         if form.is_valid():
-            form.instance.sender = User.objects.get(username=form.cleaned_data['sender'])
+            form.instance.customer = User.objects.get(username=form.cleaned_data['sender'])
+            form.instance.source_service_manager = request.user
             form.instance.receiver = User.objects.get(username=form.cleaned_data['receiver'])
+            form.instance.destination_service_manager = User.objects.get(
+                username=form.cleaned_data['destination_service_manager']
+            )
             parcel = form.save()
             string = str(parcel.tracking_id)
             new_parcel = Parcel.objects.get(tracking_id=string)
@@ -164,8 +169,7 @@ class AddUserView(View):
 class AddSuperUserView(View):
 
     def get(self, request):
-        context = {'offices': PostOffice.objects.all()}
-        return render(request, template_name='admins/super_user_form.html', context=context)
+        return render(request, template_name='admins/super_user_form.html')
 
     def post(self, request):
 
@@ -174,16 +178,15 @@ class AddSuperUserView(View):
         cnic = request.POST.get('cnic')
         email = request.POST.get('email')
         address = request.POST.get('address')
-        office = request.POST.get('office')
 
-        if phone and name and cnic and address and office:
+        if phone and name and cnic and address:
             if not email:
                 email = f"{cnic}@gmail.com"
 
             try:
                 user = User.objects.create_user(
                     username=cnic, cnic=cnic, email=email, address=address, password=f'default@{phone}',
-                    is_active=True, is_customer=False, first_name=name, office=PostOffice.objects.get(pk=office), is_superuser=True
+                    is_active=True, is_customer=False, first_name=name, is_superuser=True
                 )
                 user.save()
                 messages.success(request, f"New admin user {user.first_name} created successfully")
@@ -194,3 +197,60 @@ class AddSuperUserView(View):
             messages.error(request, "Please fill out all the fields to create new user")
 
         return redirect('admins:add-super-user')
+
+
+@method_decorator(admin_decorators, name='dispatch')
+class AddPostmanUserView(View):
+
+    def get(self, request):
+        return render(request, template_name='admins/super_user_form.html')
+
+    def post(self, request):
+
+        phone = request.POST.get('phone')
+        name = request.POST.get('name')
+        cnic = request.POST.get('cnic')
+        email = request.POST.get('email')
+        address = request.POST.get('address')
+
+        if phone and name and cnic and address:
+            if not email:
+                email = f"{cnic}@gmail.com"
+
+            try:
+                user = User.objects.create_user(
+                    username=cnic, cnic=cnic, email=email, address=address, password=f'default@{phone}',
+                    is_active=True, is_customer=False, first_name=name, is_postman=True
+                )
+                user.save()
+                messages.success(request, f"New postman {user.first_name} created successfully")
+                return redirect('admins:user')
+            except IntegrityError:
+                messages.error(request, "Username email and cnic must be unique")
+        else:
+            messages.error(request, "Please fill out all the fields to create new user")
+
+        return redirect('admins:user')
+
+
+@method_decorator(admin_decorators, name='dispatch')
+class ReceivedParcel(View):
+
+    def get(self, request, pk):
+        parcel = None
+
+        # PARCEL EXISTS
+        try:
+            parcel = Parcel.objects.get(pk=pk)
+        except Parcel.DoesNotExist:
+            messages.error(request, "Requested Parcel doesn't exists")
+            return redirect('admins:parcel')
+
+        if parcel.destination_service_manager == request.user:
+            parcel.status = 'dsm'
+            parcel.save()
+            messages.success(request, "Parcel mark as received successfully")
+        else:
+            messages.error(request, "You are not registered Destination manager")
+
+        return redirect('admins:parcel')

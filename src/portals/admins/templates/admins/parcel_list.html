@@ -24,16 +24,16 @@
                 <div class="card-body">
                     {% if parcel_list %}
                         <div class="table-responsive">
-                            <table class="table table-bordered table-centered table-nowrap mb-0">
+                            <table class="table table-hover table-centered table-nowrap mb-0">
                                 <thead class="thead-light">
                                 <tr>
-                                    <th>Postal Charges</th>
-                                    <th>Location</th>
-                                    <th>Postman</th>
+                                    <th>ID</th>
                                     <th>Sender</th>
                                     <th>Receiver</th>
-                                    <th>Traking ID</th>
+                                    <th>PostMan</th>
+                                    <th>Tracking ID</th>
                                     <th>Created On</th>
+                                    <th>Status</th>
                                     <th>QR Code</th>
                                 </tr>
                                 </thead>
@@ -41,13 +41,47 @@
 
                                 {% for object in parcel_list %}
                                     <tr>
-                                        <td>{{ object.postal_charges }}</td>
-                                        <td>{{ object.dispatchLocation }}</td>
-                                        <td>{{ object.postman }}</td>
-                                        <td>{{ object.sender }}</td>
-                                        <td>{{ object.receiver }}</td>
+                                        <td>
+                                            <b>#{{ object.pk }}</b>
+                                        </td>
+                                        <td>
+                                            <b>
+                                                {{ object.customer }}
+                                            </b>
+                                        </td>
+                                        <td>
+                                            <b>{{ object.receiver }}</b>
+                                        </td>
+                                        <td>
+                                            {% if object.postman %}
+                                                <b>
+                                                    {{ object.postman }}
+                                                </b>
+                                            {% else %}
+                                                <b class="text-danger">None</b>
+                                            {% endif %}
+                                        </td>
                                         <td>{{ object.tracking_id }}</td>
                                         <td>{{ object.created_on }}</td>
+                                        <td>
+                                            {% if object.destination_service_manager == request.user %}
+                                                {% if object.status == 'ssm' %}
+                                                    <b>
+                                                        <a href="{% url 'admins:parcel-received' object.pk %}"
+                                                           class="btn btn-sm btn-primary">Pick Parcel</a>
+                                                    </b>
+                                                {% else %}
+                                                    <b class="text-success">
+                                                        <i class="fa fa-check-circle"></i> Received
+                                                    </b>
+                                                {% endif %}
+
+                                            {% else %}
+                                                <b class="text-success">
+                                                    <i class="fa fa-check-circle"></i> Transferred
+                                                </b>
+                                            {% endif %}
+                                        </td>
                                         <td><a href="/media/{{ object.tracking_id }}-QR.png">QR code</a></td>
                                     </tr>
                                 {% endfor %}
