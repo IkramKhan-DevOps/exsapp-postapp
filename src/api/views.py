@@ -1,11 +1,21 @@
 import os
+
+from rest_framework.exceptions import APIException
+
 from src.accounts.permissions import PostmanCheck
-from rest_framework import generics
+from rest_framework import generics, status
 from rest_framework import permissions
 
 from src.accounts.models import User
 from src.api.models import Parcel
 from src.api.serializers import UserProfileSerializer, UserImageSerializer, ParcelSerializer
+
+
+def get_api_exception(detail, code):
+    api_exception = APIException()
+    api_exception.status_code = code
+    api_exception.detail = detail
+    return api_exception
 
 
 class UserUpdateView(generics.RetrieveUpdateAPIView):
@@ -24,6 +34,8 @@ class ParcelViewSet(generics.RetrieveUpdateAPIView):
 
     def get_object(self):
         parcel = Parcel.objects.get(tracking_id=self.kwargs.get('tracking_id'))
+        if parcel.status == 'ssm':
+            raise get_api_exception("You cannot scan parcel at the moment", status.HTTP_406_NOT_ACCEPTABLE)
         if self.request.user.type == 'Postman' \
                 or self.request.user.type == 'POSTMAN' or self.request.user.type == 'postman':
             parcel.postman = self.request.user

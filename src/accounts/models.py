@@ -25,14 +25,15 @@ class User(AbstractUser):
     )
     phone_number = models.CharField(max_length=30, null=True, blank=True)
     cnic = models.CharField(max_length=13, null=True, blank=True,
-                            help_text="13 digits cnic without -"
-                            )
+                            help_text="13 digits cnic without -")
     address = models.TextField(max_length=30, null=True, blank=True)
     latitude = models.DecimalField(max_digits=9, decimal_places=6, default=0.00, blank=True, null=True)
     longitude = models.DecimalField(max_digits=9, decimal_places=6, default=0.00, blank=True, null=True)
     office = models.ForeignKey('api.PostOffice', null=True, blank=True, on_delete=models.SET_NULL)
     is_customer = models.BooleanField(default=True)
     is_postman = models.BooleanField(default=False)
+    city = models.CharField(max_length=30, null=True, blank=True, default="Default")
+    postal_code = models.IntegerField(default=0, null=True, blank=True)
 
     class Meta:
         ordering = ['-id']

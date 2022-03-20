@@ -40,7 +40,7 @@ class UserCustomAdmin(admin.ModelAdmin):
         (None, {'fields': ('username', 'password')}),
         ('Personal info', {'fields': (
             'profile_image', 'first_name', 'last_name', 'latitude', 'longitude', 'email',
-            'phone_number',
+            'phone_number', 'city', 'postal_code',
             'cnic', 'address')}),
         ('Permissions', {
             'fields': (

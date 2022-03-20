@@ -17,6 +17,7 @@
                 <div class="card-body border-bottom">
                     <p class="card-title">Add New Parcel</p>
                 </div>
+
                 <div class="card-body">
 
                     <form method="post">
@@ -39,12 +40,16 @@
                 <div class="card-body">
                     <form action="{% url 'admins:add-user' %}" method="post">
                         {% csrf_token %}
-                        <input required id="phone" name="phone" class="form-control mb-2" type="text" placeholder="Phone">
+                        <input required id="phone" name="phone" class="form-control mb-2" type="number"
+                               placeholder="Phone">
                         <input required id="name" name="name" class="form-control mb-2" type="text" placeholder="Name">
-                        <input required id="cnic" name="cnic" class="form-control mb-2" type="text" placeholder="CNIC">
-                        <input id="email" name="email" class="form-control mb-2" type="text" placeholder="Email">
-                        <textarea required id="address" name="address" class="form-control mb-2" placeholder="Address"></textarea>
-
+                        <input required id="cnic" name="cnic" class="form-control mb-2" type="number"
+                               placeholder="CNIC">
+                        <input id="email" name="email" class="form-control mb-2" type="email"
+                               placeholder="Email (Optional)">
+                        <textarea required id="address" name="address" class="form-control mb-2"
+                                  placeholder="Address"></textarea>
+                        <input required id="city" name="city" class="form-control mb-2" type="text" placeholder="city">
                         <div>
                             <button type="submit" class="btn btn-primary"><i class="fa fa-user-plus"></i> Create
                             </button>
@@ -70,6 +75,7 @@
             const sender = $('#id_sender');
             const receiver = $('#id_receiver');
             const userError = $('#user-error');
+            const postal_code = $('#id_postal_code');
             userError.hide();
 
 
@@ -77,7 +83,36 @@
                 get_c_api_call_user_exists('/a/json/user/' + $(this).val() + '/exists/')
             });
 
+            postal_code.blur(function () {
+                $.get('/a/json/city/' + $(this).val() + '/exists/', function (data) {
+                    if (data.flag === true) {
+                        Swal.fire(
+                            'Success!',
+                            'Postal Code available!',
+                            'success'
+                        )
+                    } else {
+                        $(sender).val('');
+                        $(receiver).val('');
+                        Swal.fire(
+                            'Failed!',
+                            'Postal Code unavailable!',
+                            'error'
+                        )
+                    }
+                });
+            });
+
             receiver.blur(function () {
+                if ($(this).val() === $(sender).val()) {
+                    $(receiver).val('');
+                    Swal.fire(
+                        'Failed!',
+                        'Sender and Receiver cannot be same',
+                        'error'
+                    );
+                    return;
+                }
                 get_c_api_call_user_exists('/a/json/user/' + $(this).val() + '/exists/')
             });
 
@@ -91,19 +126,19 @@
                 if (is_successful === true) {
                     Swal.fire(
                         'Success!',
-                        'User available with this username!',
+                        'User available with this cnic!',
                         'success'
                     )
                 } else {
+                    $(sender).val('');
+                    $(receiver).val('');
                     Swal.fire(
                         'Failed!',
-                        'User not available with this username!',
+                        'User not available with this cnic!',
                         'error'
                     )
                 }
             }
-
-
         });
     </script>
 {% endblock %}

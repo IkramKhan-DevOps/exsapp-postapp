@@ -12,14 +12,20 @@
     {# SAME FOR ALL #}
     <div class="row justify-content-center">
         <div class="col-6">
-            <h4>Add new service manager</h4>
+            <h4>Add new Postman</h4>
             <div class="card mt-3">
                 <div class="card-body">
                     <form action="" method="post">
                         {% csrf_token %}
                         <input required id="name" name="name" class="form-control mb-2" type="text" placeholder="Name">
-                        <input id="email" name="email" class="form-control mb-2" type="text" placeholder="Email">
-                        <input required id="city" name="city" class="form-control mb-2" type="text" placeholder="City">
+                        <input required id="phone" name="phone" class="form-control mb-2" type="number"
+                               placeholder="Phone">
+                        <input id="cnic" name="cnic" class="form-control mb-2" type="number" placeholder="Cnic">
+                        <input id="email" name="email" class="form-control mb-2" type="email" placeholder="Email">
+                        <textarea id="address" name="address" class="form-control mb-2" type="text"
+                                  placeholder="Address"></textarea>
+                        <input required id="postal_code" name="postal_code" class="form-control mb-2" type="text"
+                               placeholder="Postal_code">
                         <div>
                             <button type="submit" class="btn btn-primary"><i class="fa fa-user-plus"></i> Create
                             </button>

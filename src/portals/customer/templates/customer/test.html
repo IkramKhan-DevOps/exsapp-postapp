@@ -49,6 +49,7 @@
 
 
             sender.blur(function () {
+                console.log("SENDER " + $(this).val());
                 get_c_api_call_user_exists('/a/json/user/' + $(this).val() + '/exists/')
             });
 
@@ -57,12 +58,15 @@
             });
 
             function get_c_api_call_user_exists(url) {
+                console.log("CALL " + url);
                 $.get(url, function (data) {
+                    console.log("RESPONSE " + data.flag);
                     message_generator(data.flag)
                 });
             }
 
             function message_generator(is_successful) {
+                console.log("RESPONSE " + is_successful);
                 if (is_successful === true) {
                     Swal.fire(
                         'Success!',

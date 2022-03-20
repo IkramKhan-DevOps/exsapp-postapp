@@ -8,6 +8,7 @@ from django.contrib.auth.decorators import user_passes_test, login_required
 from django.contrib.auth.forms import UserCreationForm
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.db import IntegrityError
+from django.forms import TextInput
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
@@ -57,9 +58,9 @@ class ParcelListView(ListView):
 
 
 class ParcelForm(forms.ModelForm):
-    sender = forms.CharField()
-    receiver = forms.CharField()
-    destination_service_manager = forms.CharField()
+    sender = forms.CharField(widget=TextInput(attrs={'type': 'number'}))
+    receiver = forms.CharField(widget=TextInput(attrs={'type': 'number'}))
+    postal_code = forms.CharField(widget=TextInput(attrs={'type': 'number'}))
 
     class Meta:
         model = Parcel
@@ -107,15 +108,17 @@ class TestView(View):
         if form.is_valid():
             form.instance.customer = User.objects.get(username=form.cleaned_data['sender'])
             form.instance.source_service_manager = request.user
-            form.instance.receiver = User.objects.get(username=form.cleaned_data['receiver'])
-            form.instance.destination_service_manager = User.objects.get(
-                username=form.cleaned_data['destination_service_manager']
+            receiver = User.objects.get(username=form.cleaned_data['receiver'])
+            form.instance.receiver = receiver
+            form.instance.destination_city = User.objects.get(
+                postal_code=form.cleaned_data['postal_code']
             )
             parcel = form.save()
             string = str(parcel.tracking_id)
             new_parcel = Parcel.objects.get(tracking_id=string)
             image = get_qr_image(string)
             new_parcel.qr_image = image
+            new_parcel.destination_service_manager = User.objects.get(postal_code=form.cleaned_data['postal_code'])
             new_parcel.save()
             return redirect('admins:parcel')
         return render(request, 'admins/test.html', {'form': form})
@@ -126,7 +129,22 @@ class UserExistsJSON(View):
 
     def get(self, request, username):
         flag = False
-        user = User.objects.filter(username=username)
+        user = User.objects.filter(cnic=username, is_superuser=False)
+        if user:
+            flag = True
+
+        response = {
+            'flag': flag,
+        }
+        return JsonResponse(data=response, safe=False)
+
+
+@method_decorator(admin_decorators, name='dispatch')
+class CityExistsJSON(View):
+
+    def get(self, request, city):
+        flag = False
+        user = User.objects.filter(postal_code=city, is_superuser=True)
         if user:
             flag = True
 
@@ -146,6 +164,7 @@ class AddUserView(View):
         cnic = request.POST.get('cnic')
         email = request.POST.get('email')
         address = request.POST.get('address')
+        city = request.POST.get('city')
 
         if phone and name and cnic and address:
             if not email:
@@ -153,8 +172,8 @@ class AddUserView(View):
 
             try:
                 user = User.objects.create_user(
-                    username=cnic, cnic=cnic, email=email, address=address, password=f'default@{phone}',
-                    is_active=True, is_customer=True, first_name=name
+                    username=cnic, cnic=cnic, email=email, address=address, password=f'default@user',
+                    is_active=True, is_customer=True, first_name=name, city=city
                 )
                 messages.success(request, f"New user {user.first_name} created successfully")
             except IntegrityError:
@@ -172,27 +191,21 @@ class AddSuperUserView(View):
         return render(request, template_name='admins/super_user_form.html')
 
     def post(self, request):
-
-        phone = request.POST.get('phone')
         name = request.POST.get('name')
-        cnic = request.POST.get('cnic')
         email = request.POST.get('email')
-        address = request.POST.get('address')
+        city = request.POST.get('city')
 
-        if phone and name and cnic and address:
-            if not email:
-                email = f"{cnic}@gmail.com"
-
+        if email and name and city:
             try:
                 user = User.objects.create_user(
-                    username=cnic, cnic=cnic, email=email, address=address, password=f'default@{phone}',
-                    is_active=True, is_customer=False, first_name=name, is_superuser=True
+                    username=email, email=email, password=f'default@manager',
+                    is_active=True, is_customer=False, first_name=name, is_superuser=True, city=city
                 )
                 user.save()
                 messages.success(request, f"New admin user {user.first_name} created successfully")
                 return redirect('admins:user')
             except IntegrityError:
-                messages.error(request, "Username email and cnic must be unique")
+                messages.error(request, "Username already exists")
         else:
             messages.error(request, "Please fill out all the fields to create new user")
 
@@ -203,15 +216,22 @@ class AddSuperUserView(View):
 class AddPostmanUserView(View):
 
     def get(self, request):
-        return render(request, template_name='admins/super_user_form.html')
+        return render(request, template_name='admins/add_postman.html')
 
     def post(self, request):
-
         phone = request.POST.get('phone')
         name = request.POST.get('name')
         cnic = request.POST.get('cnic')
         email = request.POST.get('email')
         address = request.POST.get('address')
+        postal_code = request.POST.get('postal_code')
+
+        print(name)
+        print(phone)
+        print(cnic)
+        print(email)
+        print(address)
+        print(postal_code)
 
         if phone and name and cnic and address:
             if not email:
@@ -219,9 +239,11 @@ class AddPostmanUserView(View):
 
             try:
                 user = User.objects.create_user(
-                    username=cnic, cnic=cnic, email=email, address=address, password=f'default@{phone}',
-                    is_active=True, is_customer=False, first_name=name, is_postman=True
+                    username=cnic, cnic=cnic, email=email, address=address, password='default@postman',
+                    is_active=True, is_customer=False, first_name=name, is_postman=True, postal_code=postal_code
                 )
+                print("PASSWORD")
+                print(user.password)
                 user.save()
                 messages.success(request, f"New postman {user.first_name} created successfully")
                 return redirect('admins:user')

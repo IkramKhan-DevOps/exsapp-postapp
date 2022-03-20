@@ -2,7 +2,7 @@ from django.urls import path
 
 from src.portals.admins.views import (
     DashboardView, UserListView, TestView, ParcelListView,
-    UserExistsJSON, SearchIDView, AddUserView, AddSuperUserView, ReceivedParcel, AddPostmanUserView
+    UserExistsJSON, SearchIDView, AddUserView, AddSuperUserView, ReceivedParcel, AddPostmanUserView, CityExistsJSON
     )
 
 app_name = "admins"
@@ -15,6 +15,7 @@ urlpatterns = [
     path('parcel/<int:pk>/receive/', ReceivedParcel.as_view(), name='parcel-received'),
     path('add/parcel/', TestView.as_view(), name='add-parcel'),
     path('json/user/<str:username>/exists/', UserExistsJSON.as_view(), name='user-exists-json'),
+    path('json/city/<str:city>/exists/', CityExistsJSON.as_view(), name='user-exists-json'),
 
     path('add/user/', AddUserView.as_view(), name='add-user'),
     path('add/admin/user/', AddSuperUserView.as_view(), name='add-super-user'),

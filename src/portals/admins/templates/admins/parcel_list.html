@@ -30,6 +30,8 @@
                                     <th>ID</th>
                                     <th>Sender</th>
                                     <th>Receiver</th>
+                                    <th>Destination City</th>
+                                    <th>Destination Postal Code</th>
                                     <th>PostMan</th>
                                     <th>Tracking ID</th>
                                     <th>Created On</th>
@@ -45,13 +47,18 @@
                                             <b>#{{ object.pk }}</b>
                                         </td>
                                         <td>
-                                            <b>
-                                                {{ object.customer }}
-                                            </b>
+                                            {{ object.customer }}
                                         </td>
                                         <td>
-                                            <b>{{ object.receiver }}</b>
+                                            {{ object.receiver }}
                                         </td>
+                                        <td>
+                                            <b>{{ object.destination_service_manager.city }}</b>
+                                        </td>
+                                        <td>
+                                            <b>{{ object.destination_service_manager.postal_code }}</b>
+                                        </td>
+
                                         <td>
                                             {% if object.postman %}
                                                 <b>
