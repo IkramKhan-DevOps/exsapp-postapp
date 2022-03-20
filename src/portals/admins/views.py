@@ -225,14 +225,6 @@ class AddPostmanUserView(View):
         email = request.POST.get('email')
         address = request.POST.get('address')
         postal_code = request.POST.get('postal_code')
-
-        print(name)
-        print(phone)
-        print(cnic)
-        print(email)
-        print(address)
-        print(postal_code)
-
         if phone and name and cnic and address:
             if not email:
                 email = f"{cnic}@gmail.com"
@@ -240,6 +232,7 @@ class AddPostmanUserView(View):
             try:
                 user = User.objects.create_user(
                     username=cnic, cnic=cnic, email=email, address=address, password='default@postman',
+                    phone_number=phone,
                     is_active=True, is_customer=False, first_name=name, is_postman=True, postal_code=postal_code
                 )
                 print("PASSWORD")
