@@ -115,6 +115,9 @@ class TestView(View):
             )
             if users:
                 form.instance.destination_city = users[0]
+            else:
+                messages.error(request, "Postal code not found")
+                return render(request, 'admins/test.html', {'form': form})
             parcel = form.save()
             string = str(parcel.tracking_id)
             new_parcel = Parcel.objects.get(tracking_id=string)
