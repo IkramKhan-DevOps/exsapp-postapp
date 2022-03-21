@@ -120,6 +120,8 @@ class TestView(View):
             new_parcel.qr_image = image
             new_parcel.destination_service_manager = User.objects.get(postal_code=form.cleaned_data['postal_code'])
             new_parcel.save()
+            send_email.send_email(new_parcel.customer, "Your Parcel is is on the Way thanks for using PakEPost")
+            send_email.send_email(new_parcel.receiver, "Your Parcel is is on the Way thanks for using PakEPost")
             return redirect('admins:parcel')
         return render(request, 'admins/test.html', {'form': form})
 
