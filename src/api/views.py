@@ -36,8 +36,8 @@ class ParcelViewSet(generics.RetrieveUpdateAPIView):
         parcel = Parcel.objects.get(tracking_id=self.kwargs.get('tracking_id'))
         if parcel.status == 'ssm':
             raise get_api_exception("You cannot scan parcel at the moment", status.HTTP_406_NOT_ACCEPTABLE)
-        if self.request.user.type == 'Postman' \
-                or self.request.user.type == 'POSTMAN' or self.request.user.type == 'postman':
+
+        if self.request.user.is_postman:
             parcel.postman = self.request.user
             parcel.save()
         return parcel
