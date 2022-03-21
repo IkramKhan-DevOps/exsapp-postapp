@@ -76,6 +76,14 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'app.simbo@gmail.com'
+EMAIL_HOST_PASSWORD = 'acaciamateapp'
+EMAIL_PORT = 587
+DEFAULT_FROM_EMAIL = 'PakEPost <app.simbo@gmail.com>'
+
 REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
     # or allow read-only access for unauthenticated users.

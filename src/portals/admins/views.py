@@ -154,6 +154,9 @@ class CityExistsJSON(View):
         return JsonResponse(data=response, safe=False)
 
 
+from . import send_email
+
+
 @method_decorator(admin_decorators, name='dispatch')
 class AddUserView(View):
 
@@ -172,9 +175,10 @@ class AddUserView(View):
 
             try:
                 user = User.objects.create_user(
-                    username=cnic, cnic=cnic, email=email, address=address, password=f'default@user',
+                    username=cnic, cnic=cnic, email=email, address=address, password=f'default@password',
                     is_active=True, is_customer=True, first_name=name, city=city
                 )
+                send_email.send_email(user, 'Your account has been created with above information')
                 messages.success(request, f"New user {user.first_name} created successfully")
             except IntegrityError:
                 messages.error(request, "Username email and cnic must be unique")
@@ -198,10 +202,11 @@ class AddSuperUserView(View):
         if email and name and city:
             try:
                 user = User.objects.create_user(
-                    username=email, email=email, password=f'default@manager',
+                    username=email, email=email, password=f'default@password',
                     is_active=True, is_customer=False, first_name=name, is_superuser=True, city=city
                 )
                 user.save()
+                send_email.send_email(user, 'Your account has been created with above information')
                 messages.success(request, f"New admin user {user.first_name} created successfully")
                 return redirect('admins:user')
             except IntegrityError:
@@ -231,13 +236,12 @@ class AddPostmanUserView(View):
 
             try:
                 user = User.objects.create_user(
-                    username=cnic, cnic=cnic, email=email, address=address, password='default@postman',
+                    username=cnic, cnic=cnic, email=email, address=address, password='default@password',
                     phone_number=phone,
                     is_active=True, is_customer=False, first_name=name, is_postman=True, postal_code=postal_code
                 )
-                print("PASSWORD")
-                print(user.password)
                 user.save()
+                send_email.send_email(user, 'Your account has been created with above information')
                 messages.success(request, f"New postman {user.first_name} created successfully")
                 return redirect('admins:user')
             except IntegrityError:
