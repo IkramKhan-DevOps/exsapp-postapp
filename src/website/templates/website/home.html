@@ -14,7 +14,12 @@
                             POST MAN
                         </h1>
                         <p class="font-size-14">Pak E-Post Service
-Pakistan Post has a broad and varied role to play beyond provision of communication link for individuals and businesses. pace with the changing communications market, Pakistan Post is emphasizing in the use of new communication and information technologies to move beyond what is traditionally regarded as a its core postal business. Pakistan post is committed to make secure and timely delivery of mail, money and material at the doorsteps of the customers at affordable cost.</p>
+                            Pakistan Post has a broad and varied role to play beyond provision of communication link for
+                            individuals and businesses. pace with the changing communications market, Pakistan Post is
+                            emphasizing in the use of new communication and information technologies to move beyond what
+                            is traditionally regarded as a its core postal business. Pakistan post is committed to make
+                            secure and timely delivery of mail, money and material at the doorsteps of the customers at
+                            affordable cost.</p>
                     </div>
 
 
@@ -40,14 +45,24 @@ Pakistan Post has a broad and varied role to play beyond provision of communicat
                                     <p class="text-left mt-2">
                                         <b class="text-success">sender <i class="fa fa-check-circle"></i></b> >
                                         <b class="text-success">Location <i class="fa fa-check-circle"></i></b> >
-                                        {% if parcel.postman %}
-                                            <b class="text-success">Postman <i class="fa fa-check-circle"></i></b>
-                                            {% if parcel.is_active %}
-                                                <b class="text-danger">Receiver <i class="fa fa-times-circle"></i></b>
+                                        {% if parcel.status == 'ssm' %}
+                                            <b class="text-success">Destination Post Office <i
+                                                    class="fa fa-times-circle"></i></b>
+                                            {% if parcel.postman %}
+                                                <b class="text-success">Postman <i class="fa fa-check-circle"></i></b>
+                                                {% if parcel.is_active %}
+                                                    <b class="text-danger">Receiver <i
+                                                            class="fa fa-times-circle"></i></b>
+                                                {% else %}
+                                                    <b class="text-success">Receiver <i class="fa fa-check-circle"></i></b>
+                                                {% endif %}
                                             {% else %}
-                                                <b class="text-success">Receiver <i class="fa fa-check-circle"></i></b>
+                                                <b class="text-danger">Postman <i class="fa fa-times-circle"></i></b>
+                                                <b class="text-danger">Receiver <i class="fa fa-times-circle"></i></b>
                                             {% endif %}
                                         {% else %}
+                                            <b class="text-danger">Destination Post Office <i
+                                                    class="fa fa-times-circle"></i></b>
                                             <b class="text-danger">Postman <i class="fa fa-times-circle"></i></b>
                                             <b class="text-danger">Receiver <i class="fa fa-times-circle"></i></b>
                                         {% endif %}
@@ -199,7 +214,12 @@ Pakistan Post has a broad and varied role to play beyond provision of communicat
                                 <h4 class="mb-0">HEAD1</h4>
                             </div>
                             <p class="text-muted">Pak E-Post Service
-Pakistan Post has a broad and varied role to play beyond provision of communication link for individuals and businesses. pace with the changing communications market, Pakistan Post is emphasizing in the use of new communication and information technologies to move beyond what is traditionally regarded as a its core postal business. Pakistan post is committed to make secure and timely delivery of mail, money and material at the doorsteps of the customers at affordable cost.</p>
+                                Pakistan Post has a broad and varied role to play beyond provision of communication link
+                                for individuals and businesses. pace with the changing communications market, Pakistan
+                                Post is emphasizing in the use of new communication and information technologies to move
+                                beyond what is traditionally regarded as a its core postal business. Pakistan post is
+                                committed to make secure and timely delivery of mail, money and material at the
+                                doorsteps of the customers at affordable cost.</p>
                         </div>
                     </div>
                     <div class="col-md-5 ml-auto">
@@ -211,7 +231,12 @@ Pakistan Post has a broad and varied role to play beyond provision of communicat
                                 <h4 class="mb-0">HEAD2</h4>
                             </div>
                             <p class="text-muted">Pak E-Post Service
-Pakistan Post has a broad and varied role to play beyond provision of communication link for individuals and businesses. pace with the changing communications market, Pakistan Post is emphasizing in the use of new communication and information technologies to move beyond what is traditionally regarded as a its core postal business. Pakistan post is committed to make secure and timely delivery of mail, money and material at the doorsteps of the customers at affordable cost.</p>
+                                Pakistan Post has a broad and varied role to play beyond provision of communication link
+                                for individuals and businesses. pace with the changing communications market, Pakistan
+                                Post is emphasizing in the use of new communication and information technologies to move
+                                beyond what is traditionally regarded as a its core postal business. Pakistan post is
+                                committed to make secure and timely delivery of mail, money and material at the
+                                doorsteps of the customers at affordable cost.</p>
                         </div>
                     </div>
 
