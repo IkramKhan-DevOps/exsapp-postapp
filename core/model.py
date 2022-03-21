@@ -20,6 +20,7 @@ class User(models.Model):
     office = models.ForeignKey('api.PostOffice', null=True, blank=True, on_delete=models.SET_NULL)
     is_customer = models.BooleanField(default=True)
     is_postman = models.BooleanField(default=False)
+    is_service_manager = models.BooleanField(default=False)
     city = models.CharField(max_length=30, null=True, blank=True, default="Default")
     postal_code = models.IntegerField(default=0, null=True, blank=True)
 
@@ -52,10 +53,9 @@ class Parcel(models.Model):
     dispatchLocation = models.CharField(max_length=1000)
     customer = models.ForeignKey('accounts.User', on_delete=models.CASCADE, related_name='sent_by', null=True,
                                  blank=True)
-    source_service_manager = models.ForeignKey('accounts.User', on_delete=models.CASCADE, related_name='source_manager',
-                                               null=True, blank=True)
-    destination_service_manager = models.ForeignKey('accounts.User', on_delete=models.CASCADE,
-                                                    related_name='destination_manager', null=True, blank=True)
+    source_post_office = models.ForeignKey('PostOffice', on_delete=models.CASCADE,
+                                           null=True, blank=True)
+    destination_post_office = models.ForeignKey('PostOffice', on_delete=models.CASCADE, null=True, blank=True)
     receiver = models.ForeignKey('accounts.User', on_delete=models.CASCADE, related_name='receiver', null=True,
                                  blank=True)
     postman = models.ForeignKey('accounts.User', on_delete=models.CASCADE, related_name='postman', null=True,
