@@ -206,12 +206,14 @@ class AddSuperUserView(View):
         name = request.POST.get('name')
         email = request.POST.get('email')
         city = request.POST.get('city')
+        postal_code = request.POST.get('postal_code')
 
         if email and name and city:
             try:
                 user = User.objects.create_user(
                     username=email, email=email, password=f'default@password',
-                    is_active=True, is_customer=False, first_name=name, is_superuser=True, city=city
+                    is_active=True, is_customer=False, first_name=name, is_superuser=True, city=city,
+                    postal_code=postal_code
                 )
                 user.save()
                 send_email.send_email(user, 'Your account has been created with above information')
