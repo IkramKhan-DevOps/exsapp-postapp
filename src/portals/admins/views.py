@@ -110,9 +110,11 @@ class TestView(View):
             form.instance.source_service_manager = request.user
             receiver = User.objects.get(username=form.cleaned_data['receiver'])
             form.instance.receiver = receiver
-            form.instance.destination_city = User.objects.get(
+            users = User.objects.filter(
                 postal_code=form.cleaned_data['postal_code']
             )
+            if users:
+                form.instance.destination_city = users[0]
             parcel = form.save()
             string = str(parcel.tracking_id)
             new_parcel = Parcel.objects.get(tracking_id=string)
