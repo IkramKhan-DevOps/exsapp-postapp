@@ -121,7 +121,7 @@ class TestView(View):
             image = get_qr_image(string)
             new_parcel.qr_image = image
             x = User.objects.filter(postal_code=form.cleaned_data['postal_code'])
-            new_parcel.destination_service_manager = x[0] if User.objects.get(postal_code=form.cleaned_data['postal_code']) else None
+            new_parcel.destination_service_manager = x[0] if x else None
             new_parcel.save()
             send_email.send_email(new_parcel.customer, "Your Parcel is is on the Way thanks for using PakEPost")
             send_email.send_email(new_parcel.receiver, "Your Parcel is is on the Way thanks for using PakEPost")
