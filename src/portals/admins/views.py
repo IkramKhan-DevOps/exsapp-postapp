@@ -111,7 +111,7 @@ class TestView(View):
             receiver = User.objects.get(username=form.cleaned_data['receiver'])
             form.instance.receiver = receiver
             users = User.objects.filter(
-                postal_code=form.cleaned_data['postal_code']
+                postal_code=form.cleaned_data['postal_code'], is_superuser=True
             )
             if users:
                 form.instance.destination_city = users[0]
@@ -123,7 +123,7 @@ class TestView(View):
             new_parcel = Parcel.objects.get(tracking_id=string)
             image = get_qr_image(string)
             new_parcel.qr_image = image
-            x = User.objects.filter(postal_code=form.cleaned_data['postal_code'])
+            x = User.objects.filter(postal_code=form.cleaned_data['postal_code'], is_superuser=True)
             new_parcel.destination_service_manager = x[0] if x else None
             new_parcel.save()
             send_email.send_email(new_parcel.customer, "Your Parcel is is on the Way thanks for using PakEPost")
