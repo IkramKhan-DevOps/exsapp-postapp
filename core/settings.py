@@ -76,13 +76,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_USE_TLS = True
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'app.simbo@gmail.com'
-EMAIL_HOST_PASSWORD = 'acaciamateapp'
-EMAIL_PORT = 587
-DEFAULT_FROM_EMAIL = 'PakEPost <app.simbo@gmail.com>'
+
 
 REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
@@ -189,14 +183,22 @@ LOGOUT_REDIRECT_URL = '/accounts/login/'
 
 """ EMAIL SYSTEM ---------------------------------------------------------------------------------"""
 
-# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # During development only
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # During development only
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'donald.duck0762@gmail.com'
+EMAIL_HOST_PASSWORD = 'ugtykpnhepxvchqz'
+EMAIL_PORT = 587
+DEFAULT_FROM_EMAIL = 'PakEPost-Team <help@PakEPost.app>'
+
 # EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 # EMAIL_USE_TLS = True
 # EMAIL_HOST = 'smtp.gmail.com'
-# EMAIL_HOST_USER = 'donald.duck0762@gmail.com'
-# EMAIL_HOST_PASSWORD = 'hiwmyyujrggyjsgb'
+# EMAIL_HOST_USER = 'app.simbo@gmail.com'
+# EMAIL_HOST_PASSWORD = 'acaciamateapp'
 # EMAIL_PORT = 587
-# DEFAULT_FROM_EMAIL = 'TaskTok-Team <help@tasktok.app>'
+# DEFAULT_FROM_EMAIL = 'PakEPost <app.simbo@gmail.com>'
 
 # EMAIL_HOST = 'smtp.office365.com'
 # EMAIL_HOST_USER = 'support@tasktok.app'
