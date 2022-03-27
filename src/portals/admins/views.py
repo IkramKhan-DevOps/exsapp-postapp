@@ -1,3 +1,4 @@
+import uuid
 from io import StringIO
 
 import qrcode as qrcode
@@ -118,6 +119,7 @@ class TestView(View):
             else:
                 messages.error(request, "Postal code not found")
                 return render(request, 'admins/test.html', {'form': form})
+            form.instance.tracking_id = str(uuid.uuid4())[:8]
             parcel = form.save()
             string = str(parcel.tracking_id)
             new_parcel = Parcel.objects.get(tracking_id=string)

@@ -71,23 +71,31 @@
                                         <td>{{ object.tracking_id }}</td>
                                         <td>{{ object.created_on }}</td>
                                         <td>
-                                            {% if object.destination_service_manager == request.user %}
-                                                {% if object.status == 'ssm' %}
-                                                    <b>
-                                                        <a href="{% url 'admins:parcel-received' object.pk %}"
-                                                           class="btn btn-sm btn-primary">Pick Parcel</a>
-                                                    </b>
+
+                                            {% if not object.is_active %}
+                                                <b class="text-success">
+                                                    <i class="fa fa-check-circle"></i> Delivered
+                                                </b>
+                                            {% else %}
+                                                {% if object.destination_service_manager == request.user %}
+                                                    {% if object.status == 'ssm' %}
+                                                        <b>
+                                                            <a href="{% url 'admins:parcel-received' object.pk %}"
+                                                               class="btn btn-sm btn-primary">Pick Parcel</a>
+                                                        </b>
+                                                    {% else %}
+                                                        <b class="text-success">
+                                                            <i class="fa fa-check-circle"></i> Received
+                                                        </b>
+                                                    {% endif %}
+
                                                 {% else %}
                                                     <b class="text-success">
-                                                        <i class="fa fa-check-circle"></i> Received
+                                                        <i class="fa fa-check-circle"></i> Transferred
                                                     </b>
                                                 {% endif %}
-
-                                            {% else %}
-                                                <b class="text-success">
-                                                    <i class="fa fa-check-circle"></i> Transferred
-                                                </b>
                                             {% endif %}
+
                                         </td>
                                         <td><a href="/media/{{ object.tracking_id }}-QR.png">QR code</a></td>
                                     </tr>

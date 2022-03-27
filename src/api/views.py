@@ -1,10 +1,10 @@
-import os
+import datetime
 
-from rest_framework.exceptions import APIException
-
-from src.accounts.permissions import PostmanCheck
 from rest_framework import generics, status
 from rest_framework import permissions
+from rest_framework.exceptions import APIException
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from src.accounts.models import User
 from src.api.models import Parcel
@@ -33,13 +33,46 @@ class ParcelViewSet(generics.RetrieveUpdateAPIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def get_object(self):
+        print('TRACKING ID')
+        print(self.kwargs.get('tracking_id'))
         parcel = Parcel.objects.get(tracking_id=self.kwargs.get('tracking_id'))
-        parcel.status = 'ssm'
-
+        parcel.status = 'pos'
         if self.request.user.is_postman:
             parcel.postman = self.request.user
             parcel.save()
         return parcel
+
+
+class ParcelUpdateViewSet(APIView):
+    serializer_class = ParcelSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request, *args, **kwargs):
+        print('TRACKING ID')
+        print(self.kwargs.get('tracking_id'))
+        parcel = Parcel.objects.get(tracking_id=self.kwargs.get('tracking_id'))
+        message = "Parcel Deactivated"
+        if self.request.user.is_postman:
+            parcel.is_active = False
+            parcel.expiry = datetime.datetime.now().replace(
+                tzinfo=datetime.timezone(offset=datetime.timedelta())) + datetime.timedelta(hours=24)
+            message = "Parcel Deactivated"
+        if self.request.user.is_customer:
+            print(parcel.expiry)
+            print(datetime.datetime.now().replace(tzinfo=datetime.timezone(offset=datetime.timedelta())))
+            if parcel.expiry > datetime.datetime.now().replace(tzinfo=datetime.timezone(offset=datetime.timedelta())):
+                if parcel.is_active:
+                    parcel.is_active = False
+                    message = "Parcel status changed to \"Delivered\""
+                else:
+                    parcel.is_active = True
+                    message = "Parcel status changed to \"Not Delivered\""
+            else:
+                message = "You cannot make changes in parcel, it is expired"
+                Response(data={'message': message}, status=status.HTTP_406_NOT_ACCEPTABLE)
+        print(message)
+        parcel.save()
+        return Response(data={'message': message}, status=status.HTTP_202_ACCEPTED)
 
 
 class ReceiverParcelViewSet(generics.ListAPIView):
@@ -60,7 +93,7 @@ class UserParcelsView(generics.ListAPIView):
         if self.request.user.is_postman:
             parcel = Parcel.objects.filter(postman=self.request.user)
         else:
-            parcel = Parcel.objects.filter(sender=self.request.user)
+            parcel = Parcel.objects.filter(customer=self.request.user)
         return parcel
 
 

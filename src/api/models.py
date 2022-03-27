@@ -20,7 +20,7 @@ class Parcel(models.Model):
         upload_to='account/images/qrs/', null=True, blank=True, quality=75,
         help_text='size of logo must be 100*100 and format must be png image file', crop=['middle', 'center']
     )
-    tracking_id = models.CharField(max_length=100, blank=True, unique=True, default=uuid.uuid4)
+    tracking_id = models.CharField(max_length=100, blank=True, unique=True, default=(str(uuid.uuid4())[:8]))
     postal_charges = models.PositiveIntegerField(default=5)
     service_type = models.CharField(max_length=255, choices=SERVICE_TYPES_CHOICES)
     latitude = models.DecimalField(max_digits=9, decimal_places=6, default=0.00, blank=True, null=True)
@@ -41,6 +41,7 @@ class Parcel(models.Model):
     status = models.CharField(max_length=3, default='ssm')
     is_active = models.BooleanField(default=True)
     created_on = models.DateTimeField(auto_now_add=True)
+    expiry = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         ordering = ['-id']
