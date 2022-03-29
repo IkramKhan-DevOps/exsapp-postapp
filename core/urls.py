@@ -6,6 +6,7 @@ from django.urls import path, include
 
 from src.accounts.views import GoogleLoginView, CustomRegisterAccountView
 from .settings import DEBUG, MEDIA_ROOT, MEDIA_URL
+from django.contrib.auth import views as auth_views
 
 urlpatterns = [
 
