@@ -1,6 +1,5 @@
-from django.shortcuts import redirect
-from django.views import View
-from django.views.generic import TemplateView, ListView
+from django.views.generic import TemplateView
+
 from src.api.models import Parcel
 
 

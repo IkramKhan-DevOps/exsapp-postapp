@@ -27,3 +27,5 @@ class UserImageSerializer(serializers.ModelSerializer):
         fields = [
             'profile_image',
         ]
+
+
