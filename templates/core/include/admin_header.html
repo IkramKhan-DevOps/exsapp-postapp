@@ -32,8 +32,24 @@
 
 <li class="nav-item">
     {% if request.user.is_superuser %}
-        <a class="nav-link dropdown-toggle arrow-none" href="{% url 'admins:user' %}">
-            <i class="bx bx-home-circle mr-2"></i>Users
+        <a class="nav-link dropdown-toggle arrow-none" href="/a/user/customers/">
+            <i class="bx bx-home-circle mr-2"></i>Customers
+        </a>
+    {% endif %}
+</li>
+
+<li class="nav-item">
+    {% if request.user.is_superuser %}
+        <a class="nav-link dropdown-toggle arrow-none" href="/a/user/managers/">
+            <i class="bx bx-home-circle mr-2"></i>Service Managers
+        </a>
+    {% endif %}
+</li>
+
+<li class="nav-item">
+    {% if request.user.is_superuser %}
+        <a class="nav-link dropdown-toggle arrow-none" href="/a/user/postmen/">
+            <i class="bx bx-home-circle mr-2"></i>Postmen
         </a>
     {% endif %}
 </li>
