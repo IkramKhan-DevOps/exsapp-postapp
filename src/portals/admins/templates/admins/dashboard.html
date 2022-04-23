@@ -19,10 +19,9 @@
                                     <i class="mdi mdi-arrow-down h2 text-success mb-0"></i>
                                 </div>
                                 <div class="media-body">
-                                    <p class="text-muted mb-2">Received</p>
+                                    <p class="text-muted mb-2">Received Parcels</p>
                                     <h5 class="mb-0">
-                                        $ 00 <span
-                                            class="font-size-14 text-muted">(00)</span>
+                                        {{ parcels_received }}
                                     </h5>
                                 </div>
                             </div>
@@ -37,174 +36,138 @@
                                     <i class="mdi mdi-arrow-up h2 text-danger mb-0"></i>
                                 </div>
                                 <div class="media-body">
-                                    <p class="text-muted mb-2">Sent</p>
+                                    <p class="text-muted mb-2">Sent Parcels</p>
                                     <h5 class="mb-0">
-                                        $ 00 <span
-                                            class="font-size-14 text-muted">(00)</span>
+                                        {{ parcels_sent }}
                                     </h5>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-sm-3">
-                    <div class="card mini-stats-wid">
-                        <div class="card-body">
-                            <div class="media">
-                                <div class="mr-3 align-self-center">
-                                    <i class="bx bx-import h2 text-primary mb-0"></i>
-                                </div>
-                                <div class="media-body">
-                                    <p class="text-muted mb-2">Total</p>
-                                    <h5 class="mb-0">
-                                        $ 00 <span
-                                            class="font-size-14 text-muted">(00)</span>
-                                    </h5>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-3">
-                    <div class="card mini-stats-wid">
-                        <div class="card-body">
-                            <div class="media">
-                                <div class="mr-3 align-self-center">
-                                    <i class="bx bx-export h2 text-primary mb-0"></i>
-                                </div>
-                                <div class="media-body">
-                                    <p class="text-muted mb-2">.</p>
-                                    <h5 class="mb-0">
-                                        $ 00 <span
-                                            class="font-size-14 text-muted">(00)</span>
-                                    </h5>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+
             </div>
             <!-- end row -->
 
             <div class="card">
                 <div class="card-body">
-                    <h4 class="card-title mb-3">Overview</h4>
+                    <h4 class="card-title mb-3">Overview of last 7 days</h4>
                     <div id="chart">
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="card">
-                <div class="card-body">
-
-                    <h4 class="card-title mb-4">Recent Posts</h4>
-                        <div class="mt-4">
-                            <div class="table-responsive">
-                                <table class="table table-centered table-nowrap table-hover">
-                                    <thead class="thead-light">
-                                    <tr>
-                                        <th scope="col">Transaction ID</th>
-                                        <th scope="col">Sender</th>
-                                        <th scope="col">Receiver</th>
-                                        <th scope="col">Amount</th>
-                                        <th scope="col">Transfer</th>
-                                        <th scope="col">Date</th>
-                                        <th scope="col">Method</th>
-                                        <th scope="col">Status</th>
-                                        <th scope="col">Action</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                        {% for foo in '12345'|make_list %}
-                                        <tr>
-                                            <td>
-                                                <h5 class="text-truncate font-size-14"><a href="#"
-                                                                                          class="text-dark">#00</a>
-                                                </h5>
-                                                <p class="text-muted mb-0"></p>
-                                            </td>
-                                            <td>
-                                                <div class="row">
-                                                    <div class="cols pr-4">
-                                                            <img class="rounded-circle avatar-xs"
-                                                                 src="{% static 'core/images/no-user.png' %}" alt="">
-                                                    </div>
-                                                    <div class="cols">
-                                                        <a href="#">
-                                                                <h5 class="text-truncate font-size-14 mb-0">
-                                                                    Name
-                                                                </h5>
-
-                                                            <p class="text-muted mb-0">
-                                                                <i class="fa fa-wallet"></i> 321673982
-                                                            </p>
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="row">
-                                                    <div class="cols pr-4">
-                                                            <img class="rounded-circle avatar-xs"
-                                                                 src="{% static 'core/images/no-user.png' %}" alt="">
-                                                    </div>
-                                                    <div class="cols">
-                                                        <a href="#">
-                                                                <h5 class="text-truncate font-size-14 mb-0">
-                                                                    Name
-                                                                </h5>
-
-                                                            <p class="text-muted mb-0">
-                                                                <i class="fa fa-wallet"></i> 37927892
-                                                            </p>
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <b>100</b>
-                                            </td>
-                                            <td>
-                                                <h5 class="text-truncate font-size-14">
-                                                        <b class="text-success"><i class="fa fa-arrow-up"></i>
-                                                            Received
-                                                        </b>
-                                                </h5>
-                                            </td>
-                                            <td>28th Feb, 2022</td>
-                                            <td class="text-warning">
-                                                <span class="badge badge-dark">?</span>
-                                            </td>
-                                                <td class="text-success">
-                                                    <b class=""><i
-                                                            class="fa fa-check-circle"></i> {{ object.get_status_display }}
-                                                    </b>
-                                                </td>
-                                            <td>
-                                                <a href="#"><b><i
-                                                        class="fa fa-eye"></i> view</b>
-                                                </a>
-                                            </td>
-                                        </tr>
-                                        {% endfor %}
-
-
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-
-                        <div class="">
-                            <a href="#"><b><i class="fa fa-link"></i> View More</b></a>
-                        </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    {##}
+    {#    <div class="row">#}
+    {#        <div class="col-lg-12">#}
+    {#            <div class="card">#}
+    {#                <div class="card-body">#}
+    {##}
+    {#                    <h4 class="card-title mb-4">Recent Posts</h4>#}
+    {#                        <div class="mt-4">#}
+    {#                            <div class="table-responsive">#}
+    {#                                <table class="table table-centered table-nowrap table-hover">#}
+    {#                                    <thead class="thead-light">#}
+    {#                                    <tr>#}
+    {#                                        <th scope="col">Transaction ID</th>#}
+    {#                                        <th scope="col">Sender</th>#}
+    {#                                        <th scope="col">Receiver</th>#}
+    {#                                        <th scope="col">Amount</th>#}
+    {#                                        <th scope="col">Transfer</th>#}
+    {#                                        <th scope="col">Date</th>#}
+    {#                                        <th scope="col">Method</th>#}
+    {#                                        <th scope="col">Status</th>#}
+    {#                                        <th scope="col">Action</th>#}
+    {#                                    </tr>#}
+    {#                                    </thead>#}
+    {#                                    <tbody>#}
+    {#                                        {% for foo in '12345'|make_list %}#}
+    {#                                        <tr>#}
+    {#                                            <td>#}
+    {#                                                <h5 class="text-truncate font-size-14"><a href="#"#}
+    {#                                                                                          class="text-dark">#00</a>#}
+    {#                                                </h5>#}
+    {#                                                <p class="text-muted mb-0"></p>#}
+    {#                                            </td>#}
+    {#                                            <td>#}
+    {#                                                <div class="row">#}
+    {#                                                    <div class="cols pr-4">#}
+    {#                                                            <img class="rounded-circle avatar-xs"#}
+    {#                                                                 src="{% static 'core/images/no-user.png' %}" alt="">#}
+    {#                                                    </div>#}
+    {#                                                    <div class="cols">#}
+    {#                                                        <a href="#">#}
+    {#                                                                <h5 class="text-truncate font-size-14 mb-0">#}
+    {#                                                                    Name#}
+    {#                                                                </h5>#}
+    {##}
+    {#                                                            <p class="text-muted mb-0">#}
+    {#                                                                <i class="fa fa-wallet"></i> 321673982#}
+    {#                                                            </p>#}
+    {#                                                        </a>#}
+    {#                                                    </div>#}
+    {#                                                </div>#}
+    {#                                            </td>#}
+    {#                                            <td>#}
+    {#                                                <div class="row">#}
+    {#                                                    <div class="cols pr-4">#}
+    {#                                                            <img class="rounded-circle avatar-xs"#}
+    {#                                                                 src="{% static 'core/images/no-user.png' %}" alt="">#}
+    {#                                                    </div>#}
+    {#                                                    <div class="cols">#}
+    {#                                                        <a href="#">#}
+    {#                                                                <h5 class="text-truncate font-size-14 mb-0">#}
+    {#                                                                    Name#}
+    {#                                                                </h5>#}
+    {##}
+    {#                                                            <p class="text-muted mb-0">#}
+    {#                                                                <i class="fa fa-wallet"></i> 37927892#}
+    {#                                                            </p>#}
+    {#                                                        </a>#}
+    {#                                                    </div>#}
+    {#                                                </div>#}
+    {#                                            </td>#}
+    {#                                            <td>#}
+    {#                                                <b>100</b>#}
+    {#                                            </td>#}
+    {#                                            <td>#}
+    {#                                                <h5 class="text-truncate font-size-14">#}
+    {#                                                        <b class="text-success"><i class="fa fa-arrow-up"></i>#}
+    {#                                                            Received#}
+    {#                                                        </b>#}
+    {#                                                </h5>#}
+    {#                                            </td>#}
+    {#                                            <td>28th Feb, 2022</td>#}
+    {#                                            <td class="text-warning">#}
+    {#                                                <span class="badge badge-dark">?</span>#}
+    {#                                            </td>#}
+    {#                                                <td class="text-success">#}
+    {#                                                    <b class=""><i#}
+    {#                                                            class="fa fa-check-circle"></i> {{ object.get_status_display }}#}
+    {#                                                    </b>#}
+    {#                                                </td>#}
+    {#                                            <td>#}
+    {#                                                <a href="#"><b><i#}
+    {#                                                        class="fa fa-eye"></i> view</b>#}
+    {#                                                </a>#}
+    {#                                            </td>#}
+    {#                                        </tr>#}
+    {#                                        {% endfor %}#}
+    {##}
+    {##}
+    {#                                    </tbody>#}
+    {#                                </table>#}
+    {#                            </div>#}
+    {#                        </div>#}
+    {##}
+    {#                        <div class="">#}
+    {#                            <a href="#"><b><i class="fa fa-link"></i> View More</b></a>#}
+    {#                        </div>#}
+    {#                </div>#}
+    {#            </div>#}
+    {#        </div>#}
+    {#    </div>#}
 
 {% endblock %}
 
@@ -214,16 +177,22 @@
 
 {% block base_external_scripts %}
     <script>
+        let cats = {{ categories }};
+        var cats_str = [];
+        for (let i = 0; i < cats.length; i++) {
+            cats_str.push(cats[i].toString().substring(0, 4) + "-" + cats[i].toString().substring(4, 6)
+                + "-" + cats[i].toString().substring(6, 8));
+        }
+        console.log(cats_str);
+
+
         var options = {
             series: [{
-                name: 'Top Up',
-                data: [31, 40, 28, 51, 42, 109, 100]
+                name: 'Parcels received',
+                data: {{ list_received }}
             }, {
-                name: 'Withdrawals',
-                data: [11, 32, 45, 32, 34, 52, 41]
-            }, {
-                name: 'Transactions',
-                data: [12, 40, 55, 62, 74, 82, 91]
+                name: 'Parcels sent',
+                data: {{ list_sent }}
             }],
             chart: {
                 height: 225,
@@ -237,7 +206,7 @@
             },
             xaxis: {
                 type: 'number',
-                categories: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"]
+                categories: cats_str
             }
         };
 

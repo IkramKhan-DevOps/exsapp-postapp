@@ -12,14 +12,13 @@
 {% block content %}
 
     <div class="row mb-2">
-        <div class="col-lg-12">
+        <div class="col">
             <a href="{% url 'admins:add-parcel' %}" class="btn btn-primary">Add New Parcel</a>
         </div>
     </div>
 
     <div class="row">
         <div class="col-12">
-
             <div class="card">
                 <div class="card-body">
                     {% if parcel_list %}
@@ -31,10 +30,9 @@
                                     <th>Sender</th>
                                     <th>Receiver</th>
                                     <th>Destination City</th>
-                                    <th>Destination Postal Code</th>
+                                    <th>Postal Code</th>
                                     <th>PostMan</th>
                                     <th>Tracking ID</th>
-                                    <th>Created On</th>
                                     <th>Status</th>
                                     <th>QR Code</th>
                                 </tr>
@@ -69,7 +67,6 @@
                                             {% endif %}
                                         </td>
                                         <td>{{ object.tracking_id }}</td>
-                                        <td>{{ object.created_on }}</td>
                                         <td>
 
                                             {% if not object.is_active %}
@@ -119,6 +116,7 @@
 {% block base_external_scripts %}
 
     <script>
+
         $(document).ready(function () {
 
             $('label').hide();

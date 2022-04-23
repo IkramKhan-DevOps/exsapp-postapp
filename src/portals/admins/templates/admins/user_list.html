@@ -10,18 +10,42 @@
 {% endblock %}
 
 {% block content %}
-
     <div class="row mb-2">
-        <div class="col-lg-12">
+        <div class="col-lg-5">
             <a href="{% url 'admins:add-parcel' %}" class="btn btn-primary">New customer</a>
             <a href="{% url 'admins:add-super-user' %}" class="btn btn-success">Add Service Manager</a>
             <a href="{% url 'admins:add-postman-user' %}" class="btn btn-secondary">Add Postman</a>
         </div>
-    </div>
+        <div class="col-lg-3"></div>
+        <div class="col-lg-4 align-items-end">
+            <div class="d-flex flex-row-reverse">
+                {% if user_list %}
+                    {% for object in user_list %}
+                        {% if forloop.first %}
+                            {% if object.is_superuser %}
+                                <a href="/a/user/customers/" class="btn btn-secondary mr-1">Customers</a>
+                                <a href="/a/user/managers/" class="btn btn-primary mr-1">Service Managers</a>
+                                <a href="/a/user/postmen/" class="btn btn-secondary mr-1">Postmen</a>
+                            {% elif object.is_customer %}
+                                <a href="/a/user/customers/" class="btn btn-primary mr-1">Customers</a>
+                                <a href="/a/user/managers/" class="btn btn-secondary mr-1">Service Managers</a>
+                                <a href="/a/user/postmen/" class="btn btn-secondary mr-1">Postmen</a>
+                            {% elif object.is_postman %}
+                                <a href="/a/user/customers/" class="btn btn-secondary mr-1">Customers</a>
+                                <a href="/a/user/managers/" class="btn btn-secondary mr-1">Service Managers</a>
+                                <a href="/a/user/postmen/" class="btn btn-primary mr-1">Postmen</a>
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
 
+            </div>
+
+        </div>
+
+    </div>
     <div class="row">
         <div class="col-12">
-
             <div class="card">
                 <div class="card-body">
                     {% if user_list %}
@@ -39,7 +63,6 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-
                                 {% for object in user_list %}
                                     <tr>
                                         <td>{{ object.pk }}</td>
@@ -62,10 +85,8 @@
                                             <b><a href="/admin/accounts/user/{{ object.pk }}/change/"><i
                                                     class="fa fa-eye"></i></a></b>
                                         </td>
-
                                     </tr>
                                 {% endfor %}
-
                                 </tbody>
                             </table>
                         </div>
@@ -74,15 +95,11 @@
                     {% endif %}
                 </div>
             </div>
-
         </div>
     </div>
-
-
 {% endblock %}
 
 {% block base_external_scripts %}
-
     <script>
         $(document).ready(function () {
             $('label').hide();
@@ -90,5 +107,4 @@
             $('select').addClass('form-control');
         });
     </script>
-
 {% endblock %}

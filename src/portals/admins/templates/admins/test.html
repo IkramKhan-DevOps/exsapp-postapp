@@ -74,43 +74,51 @@
 
             const sender = $('#id_sender');
             const receiver = $('#id_receiver');
+
+            const receiver_hint = document.getElementById("hint_id_receiver");
+            const sender_hint = document.getElementById("hint_id_sender");
+
             const userError = $('#user-error');
             const postal_code = $('#id_postal_code');
-            userError.hide();
+            const postal_charges = $('#id_postal_charges');
 
+            $(postal_charges).val('');
+            postal_charges.focus();
+            userError.hide();
+            let checking_sender = true;
 
             sender.blur(function () {
+                checking_sender = true;
+                if ($(this).val() === $(receiver).val()) {
+                    $(sender)[0].setCustomValidity("Sender and Receiver cannot be same!");
+                    $(sender)[0].reportValidity();
+                    $(sender)[0].style.borderColor = "red";
+                    $(sender).val('');
+                    sender.focus();
+                    return;
+                }
                 get_c_api_call_user_exists('/a/json/user/' + $(this).val() + '/exists/')
             });
 
             postal_code.blur(function () {
                 $.get('/a/json/city/' + $(this).val() + '/exists/', function (data) {
                     if (data.flag === true) {
-                        Swal.fire(
-                            'Success!',
-                            'Postal Code available!',
-                            'success'
-                        )
+
                     } else {
-                        $(sender).val('');
-                        $(receiver).val('');
-                        Swal.fire(
-                            'Failed!',
-                            'Postal Code unavailable!',
-                            'error'
-                        )
+                        postal_code.focus();
+
                     }
                 });
             });
 
             receiver.blur(function () {
+                checking_sender = false;
                 if ($(this).val() === $(sender).val()) {
+                    $(receiver)[0].setCustomValidity("Sender and Receiver cannot be same!");
+                    $(receiver)[0].reportValidity();
+                    $(receiver)[0].style.borderColor = "red";
                     $(receiver).val('');
-                    Swal.fire(
-                        'Failed!',
-                        'Sender and Receiver cannot be same',
-                        'error'
-                    );
+                    receiver.focus();
                     return;
                 }
                 get_c_api_call_user_exists('/a/json/user/' + $(this).val() + '/exists/')
@@ -118,25 +126,41 @@
 
             function get_c_api_call_user_exists(url) {
                 $.get(url, function (data) {
-                    message_generator(data.flag)
+                    message_generator(data.flag, data.postal_code, data.username)
                 });
             }
 
-            function message_generator(is_successful) {
+            function message_generator(is_successful, postal_code_, username) {
                 if (is_successful === true) {
-                    Swal.fire(
-                        'Success!',
-                        'User available with this cnic!',
-                        'success'
-                    )
+                    if (checking_sender) {
+                        $(sender)[0].style.borderColor = "#67C55C";
+                        sender_hint.style.color = "#67C55C";
+                        sender_hint.innerHTML = "Username -> " + username;
+                    } else {
+                        $(receiver)[0].style.borderColor = "#67C55C";
+                        $(postal_code).val(postal_code_);
+                        receiver_hint.style.color = "#67C55C";
+                        receiver_hint.innerHTML = "Username -> " + username;
+                    }
                 } else {
-                    $(sender).val('');
-                    $(receiver).val('');
-                    Swal.fire(
-                        'Failed!',
-                        'User not available with this cnic!',
-                        'error'
-                    )
+                    if (checking_sender) {
+                        $(sender)[0].setCustomValidity("User not available with this cnic!");
+                        $(sender)[0].reportValidity();
+                        $(sender)[0].style.borderColor = "red";
+                        sender_hint.style.color = "red";
+                        sender_hint.innerHTML = "User not available with this cnic!";
+                        $(sender).val('');
+                        sender.focus()
+                    } else {
+                        $(receiver)[0].setCustomValidity("User not available with this cnic!");
+                        $(receiver)[0].reportValidity();
+                        $(receiver)[0].style.borderColor = "red";
+                        receiver_hint.style.color = "red";
+                        receiver_hint.innerHTML = "User not available with this cnic!";
+                        $(receiver).val('');
+                        receiver.focus()
+                    }
+
                 }
             }
         });

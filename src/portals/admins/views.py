@@ -24,6 +24,7 @@ from core.settings import LINUX
 
 from core.settings import BASE_DIR
 from src.api.models import Parcel, PostOffice
+import datetime
 
 User = get_user_model()
 
@@ -37,7 +38,47 @@ admin_nocache_decorators = [login_required, user_passes_test(lambda u: u.is_supe
 class DashboardView(View):
 
     def get(self, request):
-        return redirect('admins:parcel-search')
+        parcels_sent = Parcel.objects.filter(source_service_manager=request.user).count()
+        parcels_received = Parcel.objects.filter(destination_service_manager=request.user).count()
+        list_received = []
+        list_sent = []
+        categories = []
+        sent_parcels = Parcel.objects.filter(source_service_manager=request.user)
+        x = 0
+        if sent_parcels:
+            for sent_parcel in sent_parcels:
+                start_date = f'{sent_parcel.created_on - datetime.timedelta(days=1)}'
+                end_date = f'{sent_parcel.created_on + datetime.timedelta(days=1)}'
+                count = Parcel.objects.filter(source_service_manager=request.user, created_on__gte=start_date,
+                                              created_on__lte=end_date).count()
+                list_sent.append(count)
+                x += 1
+                categories.append(int(sent_parcel.created_on.strftime("%Y%m%d")))
+
+        rec_parcels = Parcel.objects.filter(destination_service_manager=request.user)
+        if rec_parcels:
+            for sent_parcel in rec_parcels:
+                start_date = f'{sent_parcel.created_on - datetime.timedelta(days=1)}'
+                end_date = f'{sent_parcel.created_on + datetime.timedelta(days=1)}'
+
+                count = Parcel.objects.filter(source_service_manager=request.user, created_on__gte=start_date,
+                                              created_on__lte=end_date).count()
+                list_received.append(count)
+                x += 1
+                categories.append(int(sent_parcel.created_on.strftime("%Y%m%d")))
+        #         sent_parcel.created_on.strftime("%Y-%m-%d")
+        list_received.append(rec_parcels.count())
+        list_sent.append(sent_parcels.count())
+
+        print(list_sent)
+        print(list_received)
+        print(categories)
+        return render(request=request, template_name='admins/dashboard.html',
+                      context={'parcels_sent': parcels_sent,
+                               'parcels_received': parcels_received,
+                               'list_sent': list_sent,
+                               'list_received': list_received,
+                               'categories': categories})
 
 
 """ ------------------------------------------------------------------- """
@@ -47,6 +88,18 @@ class DashboardView(View):
 class UserListView(ListView):
     queryset = User.objects.all()
     template_name = 'admins/user_list.html'
+
+    def get_queryset(self):
+        status = self.kwargs.get('status')
+        if status:
+            if status == 'customers':
+                return User.objects.filter(is_customer=True, is_superuser=False, is_postman=False)
+            if status == 'managers':
+                return User.objects.filter(is_superuser=True, is_customer=False, is_postman=False)
+            if status == 'postmen':
+                return User.objects.filter(is_customer=False, is_superuser=False, is_postman=True)
+
+        return User.objects.filter(is_customer=True, is_superuser=False)
 
 
 """ ------------------------------------------------------------------- """
@@ -59,15 +112,29 @@ class ParcelListView(ListView):
 
 
 class ParcelForm(forms.ModelForm):
-    sender = forms.CharField(widget=TextInput(attrs={'type': 'number'}))
-    receiver = forms.CharField(widget=TextInput(attrs={'type': 'number'}))
-    postal_code = forms.CharField(widget=TextInput(attrs={'type': 'number'}))
+    sender = forms.CharField(label='Sender cnic',
+                             widget=TextInput(
+                                 attrs={'sender': "Sender CNIC", 'type': 'number',
+                                        'placeholder': 'Enter cnic here'}))
+    receiver = forms.CharField(label='Receiver cnic',
+                               widget=TextInput(attrs={'title': "Receiver CNIC", 'type': 'number',
+                                                       'placeholder': 'Enter cnic here'}))
+    postal_code = forms.CharField(widget=TextInput(attrs={'type': 'number', 'placeholder': 'Postal code'}))
+
+    def __init__(self, *args, **kwargs):
+        super(ParcelForm, self).__init__(*args, **kwargs)
+        self.fields['sender'].title = 'Cnic must not include dashes. example format : 7145245856585'
+        self.fields['sender'].help_text = 'Cnic must not include dashes. example format : 7145245856585'
+        self.fields['receiver'].help_text = 'Cnic must not include dashes. example format : 7145245856585'
+        self.fields['postal_charges'].widget = forms.widgets.Input(attrs={'placeholder': 'Enter postal charges'})
+        self.fields['postal_charges'].help_text = 'Postal charges represent amounts in rupees'
 
     class Meta:
         model = Parcel
         fields = [
-            'postal_charges', 'service_type', 'dispatchLocation', 'details'
+            'postal_charges', 'service_type', 'details'
         ]
+        labels = {'details': 'Parcel description'}
 
 
 @method_decorator(admin_decorators, name='dispatch')
@@ -140,11 +207,17 @@ class UserExistsJSON(View):
     def get(self, request, username):
         flag = False
         user = User.objects.filter(cnic=username, is_superuser=False)
+        managers = None
         if user:
             flag = True
+            user = user[0]
+            print(user.postal_code)
+            managers = User.objects.filter(city=user.city, is_superuser=True)
 
         response = {
             'flag': flag,
+            'postal_code': managers[0].postal_code if managers else 0,
+            'username': user.first_name if user else ""
         }
         return JsonResponse(data=response, safe=False)
 
