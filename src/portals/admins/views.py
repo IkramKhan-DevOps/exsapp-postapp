@@ -47,25 +47,32 @@ class DashboardView(View):
         x = 0
         if sent_parcels:
             for sent_parcel in sent_parcels:
-                start_date = f'{sent_parcel.created_on - datetime.timedelta(days=1)}'
-                end_date = f'{sent_parcel.created_on + datetime.timedelta(days=1)}'
+                start_date = f'{sent_parcel.created_on - datetime.timedelta(hours=24)}'
+                end_date = f'{sent_parcel.created_on}'
                 count = Parcel.objects.filter(source_service_manager=request.user, created_on__gte=start_date,
                                               created_on__lte=end_date).count()
                 list_sent.append(count)
                 x += 1
+                if int(sent_parcel.created_on.strftime("%Y%m%d")) in categories:
+                    list_sent.remove(count)
+                    categories.remove(int(sent_parcel.created_on.strftime("%Y%m%d")))
                 categories.append(int(sent_parcel.created_on.strftime("%Y%m%d")))
 
         rec_parcels = Parcel.objects.filter(destination_service_manager=request.user)
         if rec_parcels:
             for sent_parcel in rec_parcels:
-                start_date = f'{sent_parcel.created_on - datetime.timedelta(days=1)}'
-                end_date = f'{sent_parcel.created_on + datetime.timedelta(days=1)}'
+                start_date = f'{sent_parcel.created_on - datetime.timedelta(hours=24)}'
+                end_date = f'{sent_parcel.created_on}'
 
                 count = Parcel.objects.filter(source_service_manager=request.user, created_on__gte=start_date,
                                               created_on__lte=end_date).count()
                 list_received.append(count)
                 x += 1
+                if int(sent_parcel.created_on.strftime("%Y%m%d")) in categories:
+                    list_received.remove(count)
+                    categories.remove(int(sent_parcel.created_on.strftime("%Y%m%d")))
                 categories.append(int(sent_parcel.created_on.strftime("%Y%m%d")))
+
         #         sent_parcel.created_on.strftime("%Y-%m-%d")
         list_received.append(rec_parcels.count())
         list_sent.append(sent_parcels.count())
@@ -73,6 +80,7 @@ class DashboardView(View):
         print(list_sent)
         print(list_received)
         print(categories)
+
         return render(request=request, template_name='admins/dashboard.html',
                       context={'parcels_sent': parcels_sent,
                                'parcels_received': parcels_received,
