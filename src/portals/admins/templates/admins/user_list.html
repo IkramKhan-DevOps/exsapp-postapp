@@ -12,11 +12,20 @@
 {% block content %}
     <div class="row mb-2">
         <div class="col-lg-5">
-            <a href="{% url 'admins:add-parcel' %}" class="btn btn-primary">New customer</a>
-            <a href="{% url 'admins:add-super-user' %}" class="btn btn-success">Add Service Manager</a>
-            <a href="{% url 'admins:add-postman-user' %}" class="btn btn-secondary">Add Postman</a>
+            {% if user_list %}
+                {% for object in user_list %}
+                    {% if forloop.first %}
+                        {% if object.is_superuser %}
+                            <a href="{% url 'admins:add-super-user' %}" class="btn btn-success">Add Service Manager</a>
+                        {% elif object.is_customer %}
+                            <a href="{% url 'admins:add-parcel' %}" class="btn btn-primary">New customer</a>
+                        {% elif object.is_postman %}
+                            <a href="{% url 'admins:add-postman-user' %}" class="btn btn-secondary">Add Postman</a>
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
         </div>
-
     </div>
     <div class="row">
         <div class="col-12">
