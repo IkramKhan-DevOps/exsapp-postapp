@@ -2,11 +2,35 @@
 {% load custom_tags %}
 
 {% block base_title %}
-    Users
+    {% if user_list %}
+        {% for object in user_list %}
+            {% if forloop.first %}
+                {% if object.is_superuser %}
+                    Service Managers
+                {% elif object.is_customer %}
+                    Customers
+                {% elif object.is_postman %}
+                    Postmen
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+    {% endif %}
 {% endblock %}
 
 {% block page_heading %}
-    Users
+    {% if user_list %}
+        {% for object in user_list %}
+            {% if forloop.first %}
+                {% if object.is_superuser %}
+                    Service Managers
+                {% elif object.is_customer %}
+                    Customers
+                {% elif object.is_postman %}
+                    Postmen
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+    {% endif %}
 {% endblock %}
 
 {% block content %}
